@@ -1,18 +1,11 @@
 ---
 name: bicep-lint-subagent
-description: >
-  Bicep syntax validation subagent. Runs bicep lint and bicep build to validate template syntax
-  and catch errors before deployment. Returns structured PASS/FAIL with diagnostics.
+description: Bicep syntax validation subagent. Runs bicep lint and bicep build to validate template syntax and catch errors before deployment. Returns structured PASS/FAIL with diagnostics.
 model: "Claude Haiku 4.5 (copilot)"
 user-invokable: false
 disable-model-invocation: false
 agents: []
-tools:
-  [
-    "execute",
-    "read",
-    "search",
-  ]
+tools: ["execute", "read", "search"]
 ---
 
 # Bicep Lint Subagent
@@ -56,16 +49,19 @@ Recommendation: {proceed/fix required}
 ## Validation Commands
 
 ### Lint Command
+
 ```bash
 bicep lint infra/bicep/{project}/main.bicep
 ```
 
 ### Build Command (catches additional errors)
+
 ```bash
 bicep build infra/bicep/{project}/main.bicep --stdout > /dev/null 2>&1 && echo "BUILD: PASS" || echo "BUILD: FAIL"
 ```
 
 ### Full Validation
+
 ```bash
 cd infra/bicep/{project} && \
 bicep lint main.bicep && \
@@ -74,12 +70,12 @@ bicep build main.bicep --stdout > /dev/null
 
 ## Result Interpretation
 
-| Condition | Status | Recommendation |
-|-----------|--------|----------------|
-| No errors, no warnings | PASS | Proceed to what-if |
-| Warnings only | PASS | Proceed (note warnings) |
-| Any errors | FAIL | Fix required |
-| Build fails | FAIL | Critical - fix required |
+| Condition              | Status | Recommendation          |
+| ---------------------- | ------ | ----------------------- |
+| No errors, no warnings | PASS   | Proceed to what-if      |
+| Warnings only          | PASS   | Proceed (note warnings) |
+| Any errors             | FAIL   | Fix required            |
+| Build fails            | FAIL   | Critical - fix required |
 
 ## Constraints
 

@@ -1,19 +1,11 @@
 ---
 name: bicep-review-subagent
-description: >
-  Bicep code review subagent. Reviews Bicep templates against Azure Verified Modules (AVM)
-  standards, naming conventions, security baseline, and best practices. Returns structured
-  APPROVED/NEEDS_REVISION/FAILED verdict with actionable feedback.
+description: Bicep code review subagent. Reviews Bicep templates against Azure Verified Modules (AVM) standards, naming conventions, security baseline, and best practices. Returns structured APPROVED/NEEDS_REVISION/FAILED verdict with actionable feedback.
 model: "GPT-5.3-Codex (copilot)"
 user-invokable: false
 disable-model-invocation: false
 agents: []
-tools:
-  [
-    "read",
-    "search",
-    "web",
-  ]
+tools: ["read", "search", "web"]
 ---
 
 # Bicep Review Subagent
@@ -70,13 +62,14 @@ Recommendation: {specific next action}
 
 ### 1. Azure Verified Modules (AVM)
 
-| Check | Severity | Details |
-|-------|----------|---------|
-| Uses AVM modules | HIGH | Prefer `br/public:avm/res/*` over raw resources |
-| AVM version current | MEDIUM | Check for outdated module versions |
-| Parameters match AVM spec | HIGH | Verify required params are provided |
+| Check                     | Severity | Details                                         |
+| ------------------------- | -------- | ----------------------------------------------- |
+| Uses AVM modules          | HIGH     | Prefer `br/public:avm/res/*` over raw resources |
+| AVM version current       | MEDIUM   | Check for outdated module versions              |
+| Parameters match AVM spec | HIGH     | Verify required params are provided             |
 
 **AVM Reference Versions**:
+
 - Key Vault: `br/public:avm/res/key-vault/vault:0.11.0`
 - Virtual Network: `br/public:avm/res/network/virtual-network:0.5.0`
 - Storage Account: `br/public:avm/res/storage/storage-account:0.14.0`
@@ -85,12 +78,12 @@ Recommendation: {specific next action}
 
 ### 2. Naming Conventions (CAF)
 
-| Check | Pattern | Example |
-|-------|---------|---------|
-| Resource groups | `rg-{workload}-{env}-{region}` | `rg-ecommerce-prod-swc` |
-| Key Vault | `kv-{short}-{env}-{suffix}` (≤24 chars) | `kv-app-dev-a1b2c3` |
-| Storage Account | `st{short}{env}{suffix}` (≤24 chars, no hyphens) | `stappdevswca1b2c3` |
-| Virtual Network | `vnet-{workload}-{env}-{region}` | `vnet-hub-prod-swc` |
+| Check           | Pattern                                          | Example                 |
+| --------------- | ------------------------------------------------ | ----------------------- |
+| Resource groups | `rg-{workload}-{env}-{region}`                   | `rg-ecommerce-prod-swc` |
+| Key Vault       | `kv-{short}-{env}-{suffix}` (≤24 chars)          | `kv-app-dev-a1b2c3`     |
+| Storage Account | `st{short}{env}{suffix}` (≤24 chars, no hyphens) | `stappdevswca1b2c3`     |
+| Virtual Network | `vnet-{workload}-{env}-{region}`                 | `vnet-hub-prod-swc`     |
 
 ### 3. Required Tags
 
@@ -107,48 +100,48 @@ tags: {
 
 ### 4. Security Baseline
 
-| Check | Required Value | Severity |
-|-------|----------------|----------|
-| `supportsHttpsTrafficOnly` | `true` | CRITICAL |
-| `minimumTlsVersion` | `'TLS1_2'` or higher | CRITICAL |
-| `allowBlobPublicAccess` | `false` | CRITICAL |
-| SQL Azure AD-only auth | `azureADOnlyAuthentication: true` | HIGH |
-| Managed Identities | Preferred over connection strings | HIGH |
-| Key Vault for secrets | Never hardcode secrets | CRITICAL |
+| Check                      | Required Value                    | Severity |
+| -------------------------- | --------------------------------- | -------- |
+| `supportsHttpsTrafficOnly` | `true`                            | CRITICAL |
+| `minimumTlsVersion`        | `'TLS1_2'` or higher              | CRITICAL |
+| `allowBlobPublicAccess`    | `false`                           | CRITICAL |
+| SQL Azure AD-only auth     | `azureADOnlyAuthentication: true` | HIGH     |
+| Managed Identities         | Preferred over connection strings | HIGH     |
+| Key Vault for secrets      | Never hardcode secrets            | CRITICAL |
 
 ### 5. Unique Resource Names
 
-| Check | Details |
-|-------|---------|
+| Check                  | Details                                         |
+| ---------------------- | ----------------------------------------------- |
 | `uniqueString()` usage | Generated once in main.bicep, passed to modules |
-| Suffix pattern | `take(uniqueString(resourceGroup().id), 6)` |
-| Length constraints | Key Vault ≤24, Storage ≤24 chars |
+| Suffix pattern         | `take(uniqueString(resourceGroup().id), 6)`     |
+| Length constraints     | Key Vault ≤24, Storage ≤24 chars                |
 
 ### 6. Code Quality
 
-| Check | Severity | Details |
-|-------|----------|---------|
-| Decorators present | MEDIUM | `@description()` on parameters |
-| Module organization | LOW | Logical module structure |
-| No hardcoded values | HIGH | Use parameters for configurable values |
-| Output definitions | MEDIUM | Expose necessary outputs |
+| Check               | Severity | Details                                |
+| ------------------- | -------- | -------------------------------------- |
+| Decorators present  | MEDIUM   | `@description()` on parameters         |
+| Module organization | LOW      | Logical module structure               |
+| No hardcoded values | HIGH     | Use parameters for configurable values |
+| Output definitions  | MEDIUM   | Expose necessary outputs               |
 
 ## Severity Levels
 
-| Level | Impact | Action |
-|-------|--------|--------|
-| CRITICAL | Security risk or will fail | FAILED - must fix |
-| HIGH | Standards violation | NEEDS_REVISION - should fix |
-| MEDIUM | Best practice | NEEDS_REVISION - recommended fix |
-| LOW | Code quality | APPROVED - optional improvement |
+| Level    | Impact                     | Action                           |
+| -------- | -------------------------- | -------------------------------- |
+| CRITICAL | Security risk or will fail | FAILED - must fix                |
+| HIGH     | Standards violation        | NEEDS_REVISION - should fix      |
+| MEDIUM   | Best practice              | NEEDS_REVISION - recommended fix |
+| LOW      | Code quality               | APPROVED - optional improvement  |
 
 ## Verdict Interpretation
 
-| Issues Found | Verdict | Next Step |
-|--------------|---------|-----------|
-| No critical/high issues | APPROVED | Proceed to deployment |
-| High issues only | NEEDS_REVISION | Return to Bicep Code agent for fixes |
-| Any critical issues | FAILED | Stop - human intervention required |
+| Issues Found            | Verdict        | Next Step                            |
+| ----------------------- | -------------- | ------------------------------------ |
+| No critical/high issues | APPROVED       | Proceed to deployment                |
+| High issues only        | NEEDS_REVISION | Return to Bicep Code agent for fixes |
+| Any critical issues     | FAILED         | Stop - human intervention required   |
 
 ## Example Review
 
