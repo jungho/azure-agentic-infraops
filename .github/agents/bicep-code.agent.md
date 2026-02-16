@@ -19,16 +19,16 @@ tools:
     execute/killTerminal,
     execute/createAndRunTask,
     execute/runTests,
+    execute/runInTerminal,
     execute/runNotebookCell,
     execute/testFailure,
-    execute/runInTerminal,
     read/terminalSelection,
     read/terminalLastCommand,
     read/getNotebookSummary,
     read/problems,
     read/readFile,
     read/readNotebookCellOutput,
-    agent,
+    agent/runSubagent,
     edit/createDirectory,
     edit/createFile,
     edit/createJupyterNotebook,
@@ -41,7 +41,6 @@ tools:
     search/searchResults,
     search/textSearch,
     search/usages,
-    search/searchSubagent,
     web/fetch,
     web/githubRepo,
     azure-mcp/acr,
@@ -103,6 +102,12 @@ tools:
     bicep/list_az_resource_types_for_provider,
     todo,
     vscode.mermaid-chat-features/renderMermaidDiagram,
+    ms-azuretools.vscode-azure-github-copilot/azure_recommend_custom_modes,
+    ms-azuretools.vscode-azure-github-copilot/azure_query_azure_resource_graph,
+    ms-azuretools.vscode-azure-github-copilot/azure_get_auth_context,
+    ms-azuretools.vscode-azure-github-copilot/azure_set_auth_context,
+    ms-azuretools.vscode-azure-github-copilot/azure_get_dotnet_template_tags,
+    ms-azuretools.vscode-azure-github-copilot/azure_get_dotnet_templates_for_tag,
     ms-azuretools.vscode-azureresourcegroups/azureActivityLog,
   ]
 handoffs:
@@ -271,6 +276,7 @@ Delegate validation to specialized subagents for thorough, isolated analysis:
 **Step 1 — Lint Validation** (run in parallel with Step 2):
 
 Delegate to `bicep-lint-subagent`:
+
 - Provide the project path: `infra/bicep/{project}/main.bicep`
 - Expect PASS/FAIL result with diagnostics
 - If FAIL: fix errors, then re-run lint subagent
@@ -278,6 +284,7 @@ Delegate to `bicep-lint-subagent`:
 **Step 2 — Code Review** (run in parallel with Step 1):
 
 Delegate to `bicep-review-subagent`:
+
 - Provide the project path: `infra/bicep/{project}/`
 - Expect APPROVED/NEEDS_REVISION/FAILED verdict
 - If NEEDS_REVISION: address feedback, then re-run review subagent

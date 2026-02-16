@@ -12,6 +12,10 @@ on:
         default: false
         type: boolean
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
   pull-requests: write
@@ -22,6 +26,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -45,10 +52,11 @@ jobs:
       - name: Check for changes
         id: changes
         run: |
-          if git diff --quiet .github/data/azure-deprecations.json 2>/dev/null; then
-            echo "changed=false" >> $GITHUB_OUTPUT
+          git add .github/data/azure-deprecations.json
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
           else
-            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Commit deprecation data
@@ -58,7 +66,7 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add .github/data/azure-deprecations.json
           git commit -m "chore(data): update Azure deprecation tracking [skip ci]" || exit 0
-          git push
+          git push origin "HEAD:${GITHUB_REF_NAME}"
 
       - name: Log deprecation summary
         if: steps.changes.outputs.changed == 'true'
