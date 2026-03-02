@@ -237,6 +237,43 @@ See `templates/optimization-report.md` for the full output template.
 
 ---
 
+## Baseline Comparison (Automated)
+
+The agent automatically snapshots and diffs agent context files as part
+of its 7-phase workflow (Phase 0 and Phase 6). No manual steps required.
+
+### How It Works
+
+1. **Phase 0** (auto): Runs `npm run snapshot:baseline -- ctx-opt-{timestamp}`
+   before any analysis. Copies `.github/agents`, `.github/instructions`,
+   `.github/prompts`, `.github/skills`, and `AGENTS.md` to
+   `agent-output/_baselines/{label}/` with a `manifest.json`.
+2. **Phases 1-5**: Normal analysis and recommendation workflow.
+3. **Phase 6** (auto): After changes are applied, runs
+   `npm run diff:baseline -- --baseline {label}` to generate a structured
+   diff report at `agent-output/_baselines/{label}/diff-report.md`.
+
+The diff report includes: per-category summary (added/modified/deleted),
+line-level impact counts, and inline unified diffs for every changed file.
+
+Baselines are git-ignored — local working data only.
+
+### Manual Usage
+
+The scripts can also be run independently:
+
+```bash
+npm run snapshot:baseline -- my-label
+npm run diff:baseline -- --baseline my-label
+```
+
+### Scripts
+
+- `scripts/snapshot-agent-context.sh` — creates timestamped baseline snapshots
+- `scripts/diff-context-baseline.sh` — generates diff reports against a baseline
+
+---
+
 ## Portability
 
 This skill contains **no project-specific logic**. To use in another project:
@@ -244,8 +281,9 @@ This skill contains **no project-specific logic**. To use in another project:
 1. Copy `.github/skills/context-optimizer/` to the target repo
 2. Copy `.github/agents/11-context-optimizer.agent.md`
 3. Copy `.github/instructions/context-optimization.instructions.md`
-4. Adjust agent numbering if needed (11 is the slot used in this repo)
-5. The log parser auto-discovers VS Code log directories
+4. Copy `scripts/snapshot-agent-context.sh` and `scripts/diff-context-baseline.sh`
+5. Adjust agent numbering if needed (11 is the slot used in this repo)
+6. The log parser auto-discovers VS Code log directories
 
 ---
 
