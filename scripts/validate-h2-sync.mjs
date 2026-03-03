@@ -12,8 +12,10 @@
  */
 
 import fs from "node:fs";
+import path from "node:path";
 
 const SKILL_PATH = ".github/skills/azure-artifacts/SKILL.md";
+const SKILL_REFS_DIR = ".github/skills/azure-artifacts/references";
 const H2_REF_PATH = ".github/instructions/azure-artifacts.instructions.md";
 const VALIDATOR_PATH = "scripts/validate-artifact-templates.mjs";
 
@@ -174,11 +176,28 @@ function main() {
   }
 
   const skillHeadings = parseMarkdownH2Blocks(readText(SKILL_PATH));
+
+  // Also parse reference files under the skill's references/ directory
+  if (fs.existsSync(SKILL_REFS_DIR)) {
+    const refFiles = fs
+      .readdirSync(SKILL_REFS_DIR)
+      .filter((f) => f.endsWith(".md"));
+    for (const refFile of refFiles) {
+      const refPath = path.join(SKILL_REFS_DIR, refFile);
+      const refHeadings = parseMarkdownH2Blocks(readText(refPath));
+      for (const [key, value] of refHeadings) {
+        if (!skillHeadings.has(key)) {
+          skillHeadings.set(key, value);
+        }
+      }
+    }
+  }
+
   const h2RefHeadings = parseMarkdownH2Blocks(readText(H2_REF_PATH));
   const validatorHeadings = parseValidatorHeadings(readText(VALIDATOR_PATH));
 
   console.log(
-    `Sources: SKILL.md (${skillHeadings.size}), H2-reference (${h2RefHeadings.size}), Validator (${validatorHeadings.size})\n`,
+    `Sources: SKILL.md + references/ (${skillHeadings.size}), H2-reference (${h2RefHeadings.size}), Validator (${validatorHeadings.size})\n`,
   );
 
   for (const artifactName of ARTIFACT_NAMES) {

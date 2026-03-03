@@ -1,6 +1,9 @@
 ---
 name: azure-troubleshooting
-description: Azure resource troubleshooting patterns including KQL templates, metric thresholds, health checks, and remediation playbooks. Use when diagnosing unhealthy Azure resources or building diagnostic workflows.
+description: >-
+  Azure resource diagnostics: KQL templates, metric thresholds, health checks, remediation.
+  USE FOR: resource errors, unhealthy alerts, KQL queries, diagnostic workflows, remediation.
+  DO NOT USE FOR: new infrastructure design, Bicep/Terraform code, architecture diagrams.
 compatibility: Requires Azure CLI with resource-graph extension
 ---
 
