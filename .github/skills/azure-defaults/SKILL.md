@@ -137,5 +137,8 @@ Load these on demand — do NOT read all at once:
 | `references/service-matrices.md` | Mapping user requirements to Azure service tiers |
 | `references/waf-criteria.md` | Scoring WAF pillar assessments |
 | `references/governance-discovery.md` | Discovering Azure Policy constraints |
+| `references/policy-effect-decision-tree.md` | Translating policy effects into plan/code actions |
+| `references/adversarial-review-protocol.md` | Running challenger-review-subagent passes |
+| `references/azure-cli-auth-validation.md` | Validating Azure CLI auth before deployments |
 | `references/terraform-conventions.md` | Generating Terraform (HCL) code |
 | `references/research-workflow.md` | Following the standard 4-step research pattern |

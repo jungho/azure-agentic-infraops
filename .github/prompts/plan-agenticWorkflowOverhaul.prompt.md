@@ -14,8 +14,8 @@ that phase, and continue execution.
 
 | Phase | Title | Status | Blocker |
 |------:|-------|--------|---------|
-| 0 | Baseline & KPI Definition | not-started | — |
-| 1 | P0 Skill Splits | not-started | — |
+| 0 | Baseline & KPI Definition | complete | — |
+| 1 | P0 Skill Splits | complete | — |
 | 2 | Instruction Optimization + Dedup | not-started | — |
 | 3 | Instruction Splits | not-started | — |
 | 4 | Error Rate & Burst Reduction | not-started | — |
@@ -50,7 +50,7 @@ that phase, and continue execution.
 
 | Date | Session | Phases Completed | Notes |
 |------|---------|-----------------|-------|
-| — | — | — | — |
+| 2025-07-03 | 1 | 0, 1 | Removed phantom toolsets ref; split azure-defaults (702->141) and azure-artifacts (614->102); 16 ref files; 9 skill descs optimized; validator + parser fixes. Commits: fcb4327, b0de949. |
 
 ---
 

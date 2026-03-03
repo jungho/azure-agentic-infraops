@@ -165,32 +165,10 @@ Before starting, validate:
 
 ## MANDATORY: Azure CLI Token Validation
 
-> **CRITICAL**: `az account show` can succeed with stale cached metadata even when
-> no valid ARM token exists. This causes repeated auth prompts and deployment
-> failures, especially in devcontainers and WSL environments.
-
-**ALWAYS validate auth with a real token acquisition — NEVER rely on `az account show` alone.**
-
-```bash
-# Step 1: Quick context check (informational only — NOT sufficient for auth)
-az account show --output table
-
-# Step 2: MANDATORY — Validate real ARM token acquisition
-az account get-access-token --resource https://management.azure.com/ --output none
-```
-
-**If Step 2 fails** ("User does not exist in MSAL token cache"):
-
-1. Run `az login --use-device-code` (works reliably in devcontainers/WSL/Codespaces)
-2. Run `az account set --subscription {subscription-id}`
-3. Re-run Step 2 to confirm token is valid
-4. Only then proceed with what-if/deployment
-
-**Why this matters**: Azure CLI stores account metadata (`~/.azure/azureProfile.json`)
-separately from MSAL tokens. Container restarts, session timeouts, or interrupted
-logins can leave metadata intact while tokens are missing or expired.
-The Azure VS Code extension auth context is also separate from CLI auth —
-being signed in via the extension does NOT mean CLI commands will work.
+Read `azure-defaults/references/azure-cli-auth-validation.md` for the
+full two-step validation procedure and recovery steps.
+Key rule: `az account show` alone is NOT sufficient — always validate
+with `az account get-access-token`.
 
 ## Preflight Validation Workflow
 

@@ -165,23 +165,10 @@ Before starting, validate:
 
 ### Step 1: Azure CLI Authentication Validation
 
-> **CRITICAL**: `az account show` can succeed with stale cached metadata even when
-> no valid ARM token exists. Always validate with a real token acquisition.
-
-```bash
-# Informational check only — NOT sufficient for auth validation
-az account show --output table
-
-# MANDATORY: Verify real ARM token acquisition
-az account get-access-token --resource https://management.azure.com/ --output none
-```
-
-**If token acquisition fails** ("User does not exist in MSAL token cache"):
-
-1. Run `az login --use-device-code` — works reliably in devcontainers/Codespaces
-2. Run `az account set --subscription {subscription-id}`
-3. Re-run `az account get-access-token` to confirm
-4. Only then proceed with planning/deployment
+Read `azure-defaults/references/azure-cli-auth-validation.md` for the
+full two-step validation procedure and recovery steps.
+Key rule: `az account show` alone is NOT sufficient — always validate
+with `az account get-access-token`.
 
 ### Step 2: State Backend Verification
 

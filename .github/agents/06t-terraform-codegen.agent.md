@@ -230,14 +230,8 @@ Before writing ANY Terraform code, validate AVM-TF compatibility:
 8. If any Deny policy **cannot** be satisfied → STOP and report to user
 
 **Policy Effect → Code Generator Action:**
-
-| Effect              | Code Generator Action                                            |
-| ------------------- | ---------------------------------------------------------------- |
-| `Deny`              | MUST set the translated Terraform argument to the required value |
-| `Modify`            | Document expected Azure modification — do NOT set conflicting    |
-| `DeployIfNotExists` | Document auto-deployed resource in implementation reference      |
-| `Audit`             | Set compliant value where feasible (best effort)                 |
-| `Disabled`          | No action required                                               |
+Read `azure-defaults/references/policy-effect-decision-tree.md` for the
+full mapping. Key rule: `Deny` = MUST set translated argument to required value.
 
 ### Phase 2: Progressive Implementation
 
@@ -386,37 +380,20 @@ Both subagents must return passing results before proceeding to adversarial revi
 
 ### Phase 4.5: Adversarial Code Review (3 passes — rotating lenses)
 
-After lint and review subagents pass, run 3 adversarial passes on the generated code:
-
-| Pass | `review_focus`             | Lens Description                                            |
-| ---- | -------------------------- | ----------------------------------------------------------- |
-| 1    | `security-governance`      | Policy compliance, identity, network isolation, encryption  |
-| 2    | `architecture-reliability` | WAF balance, SLA feasibility, failure modes, dependencies   |
-| 3    | `cost-feasibility`         | SKU sizing, pricing realism, budget alignment, reservations |
+After lint and review subagents pass, run 3 adversarial passes on the generated code.
+Read `azure-defaults/references/adversarial-review-protocol.md` for the
+lens table, compact prior_findings guidance, and invocation template.
 
 For each pass, invoke `challenger-review-subagent` via `#runSubagent`:
 
 - `artifact_path` = `infra/terraform/{project}/`
 - `project_name` = `{project}`
 - `artifact_type` = `iac-code`
-- `review_focus` = per-pass value from table above
+- `review_focus` = per-pass value from protocol lens table
 - `pass_number` = `1` / `2` / `3`
-- `prior_findings` = `null` for pass 1; **compact prior findings string for passes 2-3** (see below)
+- `prior_findings` = `null` for pass 1; compact string for passes 2-3
 
 Write each result to `agent-output/{project}/challenge-findings-iac-code-pass{N}.json`.
-
-> [!IMPORTANT]
-> **Context efficiency — compact prior_findings**
->
-> After writing each pass result to disk, **do NOT keep the full JSON in working context**.
-> Extract only the `compact_for_parent` string from the subagent response and discard the rest.
->
-> For passes 2 and 3, set `prior_findings` to a compact string built from previous
-> `compact_for_parent` values — **not the full JSON objects**:
->
-> ```text
-> prior_findings: "Pass 1: <compact_for_parent>\nPass 2: <compact_for_parent>"
-> ```
 
 If any pass returns `must_fix` items:
 
