@@ -148,6 +148,9 @@ function compareHeadings(artifactName, sourceA, sourceB, nameA, nameB) {
     if (inBNotA.length > 0) {
       console.log(`  In ${nameB} but not ${nameA}: ${inBNotA.join(", ")}`);
     }
+    console.log(
+      `  Fix: Align headings across sources. SKILL.md templates are the source of truth.`,
+    );
     errors++;
     return;
   }
@@ -156,6 +159,9 @@ function compareHeadings(artifactName, sourceA, sourceB, nameA, nameB) {
     if (a[i] !== b[i]) {
       console.log(
         `::error::${artifactName}: heading mismatch at position ${i + 1} — ${nameA}="${a[i]}" vs ${nameB}="${b[i]}"`,
+      );
+      console.log(
+        `  Fix: Update the divergent heading to match. SKILL.md templates are the source of truth.`,
       );
       errors++;
       return;
@@ -166,12 +172,17 @@ function compareHeadings(artifactName, sourceA, sourceB, nameA, nameB) {
 function main() {
   console.log("🔍 H2 Heading Sync Validator\n");
 
-  if (
-    !fs.existsSync(SKILL_PATH) ||
-    !fs.existsSync(H2_REF_PATH) ||
-    !fs.existsSync(VALIDATOR_PATH)
-  ) {
-    console.log("::error::One or more source files not found");
+  const missing = [];
+  if (!fs.existsSync(SKILL_PATH)) missing.push(SKILL_PATH);
+  if (!fs.existsSync(H2_REF_PATH)) missing.push(H2_REF_PATH);
+  if (!fs.existsSync(VALIDATOR_PATH)) missing.push(VALIDATOR_PATH);
+  if (missing.length > 0) {
+    for (const f of missing) {
+      console.log(`::error::Missing source file: ${f}`);
+    }
+    console.log(
+      "  Fix: Ensure all H2 source files exist. Run 'git status' to check for missing files.",
+    );
     process.exit(1);
   }
 
@@ -206,13 +217,21 @@ function main() {
     const validator = validatorHeadings.get(artifactName);
 
     if (!skill) {
-      console.log(`::error::${artifactName}: missing from SKILL.md`);
+      console.log(
+        `::error file=${SKILL_PATH}::${artifactName}: missing from SKILL.md + references/`,
+      );
+      console.log(
+        `  Fix: Add a '### ${artifactName}' section with H2 headings in a fenced code block to ${SKILL_PATH} or a file in ${SKILL_REFS_DIR}/`,
+      );
       errors++;
       continue;
     }
     if (!validator) {
       console.log(
-        `::error::${artifactName}: missing from validator ARTIFACT_HEADINGS`,
+        `::error file=${VALIDATOR_PATH}::${artifactName}: missing from ARTIFACT_HEADINGS`,
+      );
+      console.log(
+        `  Fix: Add a "${artifactName}": ["## ...", ...] entry to the ARTIFACT_HEADINGS object in ${VALIDATOR_PATH}`,
       );
       errors++;
       continue;
