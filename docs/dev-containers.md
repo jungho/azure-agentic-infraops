@@ -120,18 +120,18 @@ The container reads it automatically — no `gh auth login` required inside the 
    | Issues        | Read/Write |
    | Workflows     | Read/Write |
 
-6. Copy the token (`ghp_...` or `github_pat_...`)
+6. Copy the token (`github_pat_...`)
 
 #### Set it on your host machine (once per machine)
 
 ```bash
-# Linux / macOS — add to ~/.bashrc, ~/.zshrc, or ~/.profile, then reload
-export GH_TOKEN=ghp_your_token_here
+# Linux / macOS / WSL 2 — add to ~/.bashrc, ~/.zshrc, or ~/.profile, then reload
+export GH_TOKEN=github_pat_your_token_here
 ```
 
 ```powershell
 # Windows PowerShell — user-scoped, survives reboots
-[System.Environment]::SetEnvironmentVariable('GH_TOKEN', 'ghp_your_token_here', 'User')
+[System.Environment]::SetEnvironmentVariable('GH_TOKEN', 'github_pat_your_token_here', 'User')
 ```
 
 The devcontainer is already configured to forward `GH_TOKEN` from your host into the container
