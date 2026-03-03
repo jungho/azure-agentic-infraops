@@ -13,8 +13,8 @@ It includes all required tools, extensions, and configurations to build Azure in
 
 - **Azure CLI** (latest) with Bicep CLI
 - **Bicep** for Azure infrastructure
-- **Terraform** (latest) with **tfsec** security scanner
-- **Checkov** - Infrastructure security scanner
+- **Terraform** (latest) with **TFLint** (pinned to v0.61.0)
+- **Checkov** - Infrastructure security scanner (replaces tfsec, which is archived and has no ARM64 support)
 - **Go** (latest) — used to install the Terraform MCP Server binary
 
 ### Scripting & Automation
