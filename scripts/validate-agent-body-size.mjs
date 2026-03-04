@@ -47,7 +47,7 @@ function checkAgentDir(dir) {
 
     if (bodyLines > MAX_BODY_LINES) {
       console.log(
-        `::warning file=${filePath}::${file} body is ${bodyLines} lines (>${MAX_BODY_LINES}; total: ${totalLines})`,
+        `::error file=${filePath}::${file} body is ${bodyLines} lines (>${MAX_BODY_LINES}; total: ${totalLines})`,
       );
       console.log(
         `  Fix: Extract verbose sections to skill references/ or scripts/.`,
@@ -55,7 +55,7 @@ function checkAgentDir(dir) {
       console.log(
         `  Convert DO/DON'T lists to tables; compact adversarial review sections to pointers.`,
       );
-      warnings++;
+      errors++;
     }
   }
 }

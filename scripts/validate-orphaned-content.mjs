@@ -87,8 +87,10 @@ for (const skill of skillDirs) {
   }
 }
 
-// Check instruction files
-console.log("\n📁 Instructions:");
+// Check instruction files for completeness (applyTo presence)
+// Instructions auto-load by glob pattern — missing applyTo means the
+// instruction will never be applied automatically.
+console.log("\n📁 Instructions (applyTo completeness):");
 if (fs.existsSync(INSTRUCTIONS_DIR)) {
   const instrFiles = fs
     .readdirSync(INSTRUCTIONS_DIR)
@@ -96,9 +98,7 @@ if (fs.existsSync(INSTRUCTIONS_DIR)) {
 
   for (const file of instrFiles) {
     checked++;
-    const name = file.replace(".instructions.md", "");
 
-    // Instructions auto-load by glob — check the applyTo frontmatter
     const filePath = path.join(INSTRUCTIONS_DIR, file);
     const content = fs.readFileSync(filePath, "utf-8");
     const fmMatch = content.match(/^---\n([\s\S]*?)\n---/);

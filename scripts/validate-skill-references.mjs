@@ -3,8 +3,8 @@
  * Skill References Validator
  *
  * Ensures all files in skill `references/` directories are referenced
- * somewhere (SKILL.md, agents, or instructions) and all reference
- * paths mentioned in SKILL.md resolve to existing files.
+ * somewhere (SKILL.md, agents, or instructions). Orphaned reference
+ * files waste repository space and create maintenance confusion.
  *
  * @example
  * node scripts/validate-skill-references.mjs
@@ -75,12 +75,12 @@ for (const skill of skillDirs) {
     const refRelPath = `${skill}/references/${refFile}`;
     const refName = refFile.replace(/\.md$/, "");
 
-    // Check if referenced anywhere (by filename or partial path)
+    // Check if referenced anywhere using explicit reference paths
+    // to avoid false positives from short filenames matching unrelated text
     const isReferenced =
-      allContent.includes(refFile) ||
       allContent.includes(refRelPath) ||
       allContent.includes(`references/${refFile}`) ||
-      allContent.includes(refName);
+      allContent.includes(`${skill}/references/${refName}`);
 
     if (!isReferenced) {
       console.log(

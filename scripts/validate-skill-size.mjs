@@ -16,6 +16,15 @@ import path from "node:path";
 const SKILLS_DIR = ".github/skills";
 const MAX_LINES_WITHOUT_REFS = 200;
 
+// Pre-existing oversized skills (tracked for future remediation).
+// New skills MUST comply — only add entries here with a linked issue.
+const KNOWN_OVERSIZED = new Set([
+  "azure-adr",
+  "github-operations",
+  "make-skill-template",
+  "microsoft-skill-creator",
+]);
+
 let errors = 0;
 let warnings = 0;
 let checked = 0;
@@ -39,16 +48,23 @@ for (const skill of skillDirs) {
   const hasRefs = fs.existsSync(refsDir);
 
   if (lineCount > MAX_LINES_WITHOUT_REFS && !hasRefs) {
-    console.log(
-      `::warning file=${skillPath}::${skill}/SKILL.md is ${lineCount} lines (>${MAX_LINES_WITHOUT_REFS}) without references/`,
-    );
-    console.log(
-      `  Fix: Create ${refsDir}/ and move detailed content to reference files.`,
-    );
-    console.log(
-      `  Keep SKILL.md as a ≤${MAX_LINES_WITHOUT_REFS}-line quick-reference with a Reference Index section.`,
-    );
-    warnings++;
+    if (KNOWN_OVERSIZED.has(skill)) {
+      console.log(
+        `  ⚠️  ${skill}/SKILL.md is ${lineCount} lines (>${MAX_LINES_WITHOUT_REFS}) without references/ (known — tracked for remediation)`,
+      );
+      warnings++;
+    } else {
+      console.log(
+        `::error file=${skillPath}::${skill}/SKILL.md is ${lineCount} lines (>${MAX_LINES_WITHOUT_REFS}) without references/`,
+      );
+      console.log(
+        `  Fix: Create ${refsDir}/ and move detailed content to reference files.`,
+      );
+      console.log(
+        `  Keep SKILL.md as a ≤${MAX_LINES_WITHOUT_REFS}-line quick-reference with a Reference Index section.`,
+      );
+      errors++;
+    }
   } else if (lineCount > MAX_LINES_WITHOUT_REFS && hasRefs) {
     const refCount = fs
       .readdirSync(refsDir)
