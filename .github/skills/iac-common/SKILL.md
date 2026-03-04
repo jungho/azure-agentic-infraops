@@ -1,11 +1,6 @@
 ---
 name: iac-common
-description: >-
-  Shared IaC patterns for Bicep and Terraform deploy agents: CLI auth validation,
-  deployment strategies, known issues, and governance-to-code property mapping.
-  USE FOR: Deploy agent auth, known issues lookup, phased deployment, governance mapping.
-  DO NOT USE FOR: Code generation (use azure-bicep-patterns or terraform-patterns),
-  architecture decisions, cost estimation.
+description: "Shared IaC patterns for Bicep and Terraform deploy agents: CLI auth validation, deployment strategies, known issues, and governance-to-code property mapping. USE FOR: Deploy agent auth, known issues lookup, phased deployment, governance mapping. DO NOT USE FOR: Code generation (use azure-bicep-patterns or terraform-patterns), architecture decisions, cost estimation."
 ---
 
 # IaC Common Skill

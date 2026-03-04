@@ -42,7 +42,6 @@ tools:
     search/searchResults,
     search/textSearch,
     search/usages,
-    search/searchSubagent,
     web/fetch,
     web/githubRepo,
     todo,

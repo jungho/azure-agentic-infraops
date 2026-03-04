@@ -1,9 +1,6 @@
 ---
 name: azure-diagrams
-description: >-
-  Generates Azure architecture diagrams and WAF/cost charts as Python + PNG artifacts.
-  USE FOR: architecture diagrams, WAF radar charts, cost pie charts, dependency visuals.
-  DO NOT USE FOR: Bicep/Terraform code, ADR writing, troubleshooting, cost calculations.
+description: "Generates Azure architecture diagrams and WAF/cost charts as Python + PNG artifacts. USE FOR: architecture diagrams, WAF radar charts, cost pie charts, dependency visuals. DO NOT USE FOR: Bicep/Terraform code, ADR writing, troubleshooting, cost calculations."
 compatibility: Requires graphviz system package and Python diagrams library; works with Claude Code, GitHub Copilot, VS Code, and any Agent Skills compatible tool.
 license: MIT
 metadata:
