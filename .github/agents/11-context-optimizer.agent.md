@@ -277,3 +277,9 @@ This agent is designed to be reusable across projects:
 | Log format changed         | Fall back to manual pattern analysis     |
 | No agent definitions found | Analyze logs only, skip definition audit |
 | Permission denied on logs  | Suggest `chmod` or copy to workspace     |
+
+## Boundaries
+
+- **Always**: Analyze debug logs, produce optimization recommendations, identify token waste
+- **Ask first**: Implementing changes to agent definitions, modifying skill files
+- **Never**: Modify agent definitions directly (recommendations only), change workflow behavior

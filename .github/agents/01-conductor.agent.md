@@ -169,28 +169,16 @@ Master orchestrator for the 7-step Azure infrastructure development workflow.
 
 ## DO / DON'T
 
-### DO
-
-- ✅ Pause at EVERY approval gate and wait for explicit user confirmation
-- ✅ Delegate to subagents via `#runSubagent` for each workflow step
-- ✅ Track progress by checking artifact files in `agent-output/{project}/`
-- ✅ Summarize subagent results concisely (don't dump raw output)
-- ✅ Create `agent-output/{project}/` directory at project start
-- ✅ Create `agent-output/{project}/00-session-state.json` from template at project start
-- ✅ Ensure `agent-output/{project}/README.md` exists — Requirements agent creates it, all agents update it
-- ✅ Write `agent-output/{project}/00-handoff.md` at EVERY gate before presenting it to the user
-- ✅ Update `agent-output/{project}/00-session-state.json` at EVERY gate (machine source of truth)
-
-### DON'T
-
-- ❌ Read skills or templates before asking the project folder name via `askQuestions`
-- ❌ Skip approval gates — EVER
-- ❌ Deploy without validation (Deploy agent handles preflight)
-- ❌ Modify files directly — delegate to the appropriate agent
-- ❌ Include raw subagent dumps — summarize and present key findings
-- ❌ Combine multiple steps without approval between them
-- ❌ Skip writing `00-handoff.md` — it is the context seed for thread resumption
-- ❌ Skip updating `00-session-state.json` — it is the machine-readable state for resume
+| ✅ DO                                                               | ❌ DON'T                                                            |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| Pause at EVERY approval gate; wait for confirmation                 | Read skills/templates before asking project name via `askQuestions` |
+| Delegate to subagents via `#runSubagent`                            | Skip approval gates — EVER                                          |
+| Track progress via artifact files in `agent-output/{project}/`      | Deploy without validation (Deploy agent handles preflight)          |
+| Summarize subagent results concisely                                | Modify files directly — delegate to appropriate agent               |
+| Create `agent-output/{project}/` + `00-session-state.json` at start | Include raw subagent dumps                                          |
+| Ensure `README.md` exists (Requirements agent creates it)           | Combine multiple steps without approval between them                |
+| Write `00-handoff.md` at EVERY gate before presenting               | Skip `00-handoff.md` or `00-session-state.json` updates             |
+| Update `00-session-state.json` at EVERY gate                        |                                                                     |
 
 ## The 7-Step Workflow
 
@@ -282,73 +270,28 @@ Summary: agent-output/{project}/06-deployment-summary.md
 
 ## Phase Handoff Document
 
-At every approval gate, write `agent-output/{project}/00-handoff.md` **before presenting the gate**.
-This file is a compact project state snapshot that lets the user resume in a fresh chat thread
-without re-summarizing a large conversation history.
+At every approval gate, write `agent-output/{project}/00-handoff.md`
+**before presenting the gate** (compact state snapshot for thread resumption).
 
 ### Format
 
-```markdown
-# {Project} — Handoff (Step {N} complete)
+Header: `# {Project} — Handoff (Step {N} complete)` with metadata line (`Updated: {ISO} | IaC: {tool} | Branch: {branch}`).
 
-Updated: {ISO timestamp} | IaC: {Bicep | Terraform} | Branch: {git branch}
+**Required H2 sections:**
 
-## Completed Steps
+- `## Completed Steps` — checklist with artifact paths (e.g., `- [x] Step 1 → agent-output/{project}/01-requirements.md`)
+- `## Key Decisions` — region, compliance, budget, IaC tool, architecture pattern
+- `## Open Challenger Findings (must_fix only)` — unresolved must_fix titles or "None"
+- `## Context for Next Step` — 1-3 sentences for next agent
+- `## Artifacts` — bulleted list of files in `agent-output/{project}/` and `infra/`
 
-- [x] Step 1: Requirements → `agent-output/{project}/01-requirements.md`
-- [x] Step 2: Architecture → `agent-output/{project}/02-architecture-assessment.md`
-- [ ] Step 3: Design (optional — skipped | complete)
-- [ ] Step 4: IaC Plan
-- [ ] Step 5: IaC Code
-- [ ] Step 6: Deploy
-- [ ] Step 7: As-Built
-
-## Key Decisions
-
-- Region: {region}
-- Compliance: {frameworks or "None"}
-- Budget: {monthly estimate}
-- IaC tool: {Bicep | Terraform}
-- Architecture pattern: {brief description}
-
-## Open Challenger Findings (must_fix only)
-
-{List of unresolved must_fix titles from all challenge-findings-\*.json files, or "None"}
-
-## Context for Next Step
-
-{1-3 sentences describing exactly what the next agent needs to know to continue}
-
-## Artifacts
-
-{Bulleted list of all files that exist in agent-output/{project}/ and infra/}
-```
-
-### Rules
-
-- **Overwrite** on each gate — always reflects the latest state
-- **Never embed file contents** — paths only
-- **Keep under 50 lines** — this is a reference, not a doc
-- **List only unresolved must_fix items** — closed items are noise
+**Rules**: Overwrite on each gate · paths only (never embed content) · under 50 lines · only unresolved must_fix items.
 
 ## Subagent Delegation
 
-Use `#runSubagent` for each workflow step:
-
-| Step | Agent              | Key Prompt                                                                                                      |
-| ---- | ------------------ | --------------------------------------------------------------------------------------------------------------- |
-| 1    | Requirements       | FIRST call askQuestions (Phase 1 Round 1), then guide through all 4 phases before generating 01-requirements.md |
-| 2    | Architect          | Create WAF assessment for requirements in 01-requirements.md                                                    |
-| 3    | Design             | Generate architecture diagrams and ADRs (optional)                                                              |
-| 4    | Bicep Plan         | Create implementation plan for architecture in 02-architecture-assessment.md                                    |
-| 5    | Bicep Code         | Implement Bicep templates per 04-implementation-plan.md                                                         |
-| 6    | Deploy             | Deploy templates in infra/bicep/{project}/ to Azure                                                             |
-| 7    | As-Built           | Generate workload documentation for deployed infrastructure                                                     |
-| 4†   | Terraform Planner  | Create Terraform implementation plan for architecture in 02-architecture-assessment.md                          |
-| 5†   | Terraform Code Gen | Implement Terraform configuration per 04-implementation-plan.md                                                 |
-| 6†   | Terraform Deploy   | Deploy Terraform config in infra/terraform/{project}/ to Azure                                                  |
-
-† Terraform path — used when `iac_tool: Terraform` in `01-requirements.md`.
+Use `#runSubagent` to delegate each step. Step→Agent mapping follows
+the handoff labels above; Terraform path (Steps 4†/5†/6†) used when
+`iac_tool: Terraform` in `01-requirements.md`.
 
 ### Subagent Integration
 
@@ -393,17 +336,14 @@ If user explicitly requests extra validation at Step 5, delegate to lint/review/
 
 ## Starting a New Project
 
-1. **Ask for the project folder name** — ALWAYS use `askQuestions` to prompt:
-   - Derive a suggested folder name from the user's project description (lowercase, kebab-case, max 30 chars, e.g. `payment-gateway-poc`)
-   - Present the suggestion as the recommended option
-   - Enable free-form input so the user can type their own preferred name
-   - Example question: _"What should I name the project folder? This will be used for `agent-output/{name}/` and `infra/{iac_tool}/{name}/`."_
-   - NEVER silently pick a name — the user must always confirm or override
+1. **Ask for the project folder name** via `askQuestions` — suggest a kebab-case name
+   (max 30 chars, e.g. `payment-gateway-poc`) derived from description;
+   user must confirm or override (NEVER silently pick a name)
 2. Create `agent-output/{project-name}/`
-3. Create `agent-output/{project-name}/00-session-state.json` from
+3. Create `00-session-state.json` from
    `.github/skills/azure-artifacts/templates/00-session-state.template.json`
-   — set `project`, `branch`, `updated`, and `current_step: 1`
-4. Delegate to Requirements agent for Step 1 (creates initial `README.md` from PROJECT-README template)
+   — set `project`, `branch`, `updated`, `current_step: 1`
+4. Delegate to Requirements agent for Step 1 (creates initial `README.md`)
 5. Wait for Gate 1 approval
 
 ## Resuming a Project
@@ -458,3 +398,9 @@ If user explicitly requests extra validation at Step 5, delegate to lint/review/
 | Terraform Deploy   | GPT-5.3-Codex            | Deployment execution |
 | As-Built           | GPT-5.3-Codex            | Documentation gen    |
 | Subagents          | GPT-5.3-Codex            | Fast validation      |
+
+## Boundaries
+
+- **Always**: Follow 7-step workflow order, require approval at gates, delegate to specialized agents
+- **Ask first**: Skipping optional steps, changing IaC tool choice, deviating from workflow
+- **Never**: Generate IaC code directly, skip approval gates, bypass governance discovery

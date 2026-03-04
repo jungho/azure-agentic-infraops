@@ -115,30 +115,19 @@ handoffs:
 
 ## DO / DON'T
 
-### DO
-
-- ✅ Validate Azure CLI token FIRST (`az account get-access-token`) — NOT just `az account show`
-- ✅ Verify the state backend storage account exists BEFORE running `terraform init`
-- ✅ Offer to run `bootstrap-backend.sh`/`bootstrap-backend.ps1` if backend resources are missing
-- ✅ Run `terraform validate` and `terraform fmt -check` before planning
-- ✅ Check `04-implementation-plan.md` for deployment strategy (phased/single)
-- ✅ If phased: deploy one phase at a time with `var.deployment_phase` and approval gates
-- ✅ Present `terraform plan` output summary and wait for user approval before applying
-- ✅ Require explicit approval for ANY resource destruction (`- destroy`) operations
-- ✅ Generate `06-deployment-summary.md` after deployment
-- ✅ Run `terraform output` and query Azure Resource Graph post-deployment
-- ✅ Update `agent-output/{project}/README.md` — mark Step 6 complete, add your artifacts
-
-### DON'T
-
-- ❌ Deploy without running `terraform plan` first
-- ❌ Skip phase gates when plan specifies phased deployment
-- ❌ Use `terraform -target` — the code is already phase-gated via `var.deployment_phase`
-- ❌ Auto-approve production deployments (require explicit user confirmation)
-- ❌ Proceed if `terraform plan` shows resource destruction without user approval
-- ❌ Proceed if `terraform validate` fails
-- ❌ Create or modify Terraform configurations — hand back to Terraform Code agent
-- ❌ Run `terraform init` without verifying the backend storage account exists first
+| ✅ DO                                                                    | ❌ DON'T                                                                 |
+| ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
+| Validate Azure CLI token FIRST (`az account get-access-token`)           | Deploy without running `terraform plan` first                            |
+| Verify state backend storage account BEFORE `terraform init`             | Skip phase gates when plan specifies phased deployment                   |
+| Offer `bootstrap-backend.sh/.ps1` if backend missing                     | Use `terraform -target` — code is phase-gated via `var.deployment_phase` |
+| Run `terraform validate` and `terraform fmt -check` before planning      | Auto-approve production deployments                                      |
+| Check `04-implementation-plan.md` for deployment strategy                | Proceed if plan shows resource destruction without approval              |
+| Deploy phases one at a time with `var.deployment_phase` + approval gates | Proceed if `terraform validate` fails                                    |
+| Present plan summary; wait for user approval before applying             | Create/modify Terraform configs — hand back to Code agent                |
+| Require explicit approval for destruction (`- destroy`) operations       | Run `terraform init` without verifying backend exists                    |
+| Generate `06-deployment-summary.md` after deployment                     |                                                                          |
+| Run `terraform output` + Azure Resource Graph post-deployment            |                                                                          |
+| Update `agent-output/{project}/README.md` — mark Step 6 complete         |                                                                          |
 
 ## Prerequisites Check
 
@@ -165,58 +154,28 @@ Before starting, validate:
 
 ### Step 1: Azure CLI Authentication Validation
 
-> **CRITICAL**: `az account show` can succeed with stale cached metadata even when
-> no valid ARM token exists. Always validate with a real token acquisition.
-
-```bash
-# Informational check only — NOT sufficient for auth validation
-az account show --output table
-
-# MANDATORY: Verify real ARM token acquisition
-az account get-access-token --resource https://management.azure.com/ --output none
-```
-
-**If token acquisition fails** ("User does not exist in MSAL token cache"):
-
-1. Run `az login --use-device-code` — works reliably in devcontainers/Codespaces
-2. Run `az account set --subscription {subscription-id}`
-3. Re-run `az account get-access-token` to confirm
-4. Only then proceed with planning/deployment
+Read `azure-defaults/references/azure-cli-auth-validation.md` for the
+full two-step validation procedure and recovery steps.
+Key rule: `az account show` alone is NOT sufficient — always validate
+with `az account get-access-token`.
 
 ### Step 2: State Backend Verification
 
 Verify the Azure Storage Account backend exists before initializing:
 
 ```bash
-# Check if the backend resource group and storage account exist
 az storage account show \
   --name {storage_account_name} \
   --resource-group {resource_group_name} \
   --output none 2>/dev/null && echo "Backend exists" || echo "Backend missing"
 ```
 
-**If backend is missing:**
-
-Present the user with the option to run the bootstrap script:
-
-```text
-⚠️ State backend not found.
-  Storage Account: {name}
-  Resource Group: {rg}
-
-Would you like to run bootstrap-backend.sh to create it?
-Reply "bootstrap" to proceed, or create manually first.
-```
-
-On approval, run:
+**If backend is missing:** Prompt user to run `bootstrap-backend.sh` (or `bootstrap-backend.ps1` on Windows). On approval:
 
 ```bash
 cd infra/terraform/{project}
-chmod +x bootstrap-backend.sh
-./bootstrap-backend.sh
+chmod +x bootstrap-backend.sh && ./bootstrap-backend.sh
 ```
-
-Or on Windows: `pwsh -File bootstrap-backend.ps1`
 
 ### Step 3: Validate Configuration
 
@@ -266,56 +225,27 @@ Present the plan summary table. **Do NOT apply without explicit user approval.**
 
 ### Step 4.5: Pre-Deploy Adversarial Review (1 pass)
 
-After terraform plan completes and before apply, invoke `challenger-review-subagent` via `#runSubagent`:
+After terraform plan, invoke `challenger-review-subagent` via `#runSubagent`
+with `artifact_type=deployment-preview`, `review_focus=comprehensive`,
+`pass_number=1`. Write result to
+`agent-output/{project}/challenge-findings-deployment.json`.
 
-- `artifact_path` = `agent-output/{project}/06-deployment-summary.md` (or the terraform plan output captured above)
-- `project_name` = `{project}`
-- `artifact_type` = `deployment-preview`
-- `review_focus` = `comprehensive`
-- `pass_number` = `1`
-- `prior_findings` = `null`
-
-Write result to `agent-output/{project}/challenge-findings-deployment.json`.
-
-Include findings in the deployment approval gate.
-If `must_fix` count > 0, flag prominently and require explicit user acknowledgement before proceeding.
+Include findings in the deployment approval gate. If `must_fix` count > 0,
+flag prominently and require explicit user acknowledgement before proceeding.
 
 ### Step 5: Phase-Aware Deployment
 
-Read `04-implementation-plan.md` and check the `## Deployment Phases` section:
+Read `04-implementation-plan.md` `## Deployment Phases` to determine phased vs single deployment.
 
-**If phased deployment:**
+**Phased**: Deploy each phase sequentially:
 
-Deploy each phase sequentially:
+1. `terraform plan -out=tfplan -var="deployment_phase={phase}"` — present summary, get approval
+2. `terraform apply tfplan` — run `terraform output`, verify via ARG, present completion gate
+3. Repeat for next phase
 
-1. Run plan for the current phase:
-   ```bash
-   terraform plan -out=tfplan -var="deployment_phase={phase_name}" [-var-file=...]
-   ```
-2. Present plan summary and wait for user approval
-3. Execute: `terraform apply tfplan`
-4. Run `terraform output` for the completed phase
-5. Verify phase resources via Azure Resource Graph (Step 6 below)
-6. Present phase completion summary with approval gate to continue
-7. Repeat for next phase
+Or use deploy scripts: `bash deploy.sh --phase {name}` / `pwsh -File deploy.ps1 -Phase {name}`
 
-Or use the deploy script:
-
-```bash
-# Linux/macOS
-bash deploy.sh --phase foundation
-
-# Windows
-pwsh -File deploy.ps1 -Phase foundation
-```
-
-**If single deployment:**
-
-```bash
-terraform plan -out=tfplan
-# Present plan, get approval
-terraform apply tfplan
-```
+**Single**: `terraform plan -out=tfplan` → get approval → `terraform apply tfplan`
 
 ### Step 6: Post-Deployment Verification
 
@@ -343,20 +273,14 @@ Report:
 
 ## Stopping Rules
 
-**STOP IMMEDIATELY if:**
+**STOP IMMEDIATELY if:** `az account get-access-token` fails ·
+backend missing without bootstrap approval · `terraform validate` errors ·
+Destroy/Replace ops without approval · >10 resource changes
+(summarize first) · user hasn't approved · deprecation signals detected.
 
-- `az account get-access-token` fails (auth not valid)
-- State backend storage account does not exist AND user hasn't approved bootstrap
-- `terraform validate` returns errors
-- `terraform plan` shows Destroy (`-`) or Replace (`-/+`) operations without explicit approval
-- `terraform plan` shows >10 resource changes — summarize and confirm
-- User has not approved deployment
-- Deprecation signals detected in plan output
-
-**PLAN-ONLY MODE:**
-If user selects "Run Plan Only" handoff, execute plan and present summary but
-DO NOT run `terraform apply`. Generate `06-deployment-summary.md` with plan results
-and mark status as "Plan Only — Not Applied".
+**PLAN-ONLY MODE:** If user selects "Run Plan Only", execute plan and
+present summary but DO NOT apply. Generate `06-deployment-summary.md`
+with plan results, mark status as "Plan Only — Not Applied".
 
 ## Known Issues
 
@@ -377,6 +301,12 @@ and mark status as "Plan Only — Not Applied".
 
 Include attribution header from the template file (do not hardcode).
 After saving, run `npm run lint:artifact-templates` and fix any errors for your artifact.
+
+## Boundaries
+
+- **Always**: Run terraform plan before apply, require user approval, validate prerequisites
+- **Ask first**: Non-standard deployment parameters, skipping plan, deploying to production
+- **Never**: Deploy without user approval, modify IaC configurations, skip plan for production
 
 ## Validation Checklist
 

@@ -84,7 +84,6 @@ Full details in `.github/skills/terraform-patterns/SKILL.md` and root `AGENTS.md
 | `infra/bicep/{project}/`                       | Bicep templates                                           |
 | `mcp/azure-pricing-mcp/`                       | Azure Pricing MCP server                                  |
 | `.vscode/mcp.json`                             | MCP server configuration                                  |
-| `.vscode/infraops.toolsets.jsonc`              | Workspace tool groups for interactive chat (8 toolsets)   |
 | `infra/terraform/{project}/`                   | Terraform templates by project                            |
 | `docs/tf-support/`                             | Terraform support planning docs and prompts               |
 

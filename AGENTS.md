@@ -174,7 +174,6 @@ scripts/               # Validation and maintenance scripts (Node.js)
 docs/                  # User-facing documentation
 .vscode/
   mcp.json             # MCP server configuration (github, microsoft-learn, azure-pricing, terraform)
-  infraops.toolsets.jsonc  # Workspace tool groups for interactive chat (8 toolsets)
 ```
 
 ### Agent Workflow (7 Steps)
@@ -193,6 +192,15 @@ All outputs go to `agent-output/{project}/`.
 Dual IaC tracks: Bicep (agents 05b/06b/07b) and Terraform (agents 05t/06t/07t).
 The Conductor agent orchestrates the full workflow with human approval gates.
 Review column = adversarial passes by `challenger-review-subagent` (3x = rotating lenses; 1x = comprehensive).
+
+### Content Sharing Decision Framework
+
+| Content Type            | Mechanism                                | When to Use                                    |
+| ----------------------- | ---------------------------------------- | ---------------------------------------------- |
+| Enforcement rules       | Instructions (auto-loaded by glob)       | Rules that must apply to all files of a type   |
+| Shared domain knowledge | Skill `references/`                      | Deep content loaded on-demand by agents        |
+| Executable scripts      | Skill `scripts/` (NOT `references/`)     | Deterministic operations, build/deploy scripts |
+| Cross-agent boilerplate | Subagent or instruction with narrow glob | Repeated patterns across multiple agent bodies |
 
 ## Terraform Conventions
 
