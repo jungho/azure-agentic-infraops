@@ -311,6 +311,15 @@
 
 ---
 
+## 📊 Complexity Classification
+
+| Field | Value |
+| ----- | ----- |
+| Complexity | `standard` |
+| Rationale | Auto-classified during context optimization |
+
+---
+
 ## 📋 Summary for Architecture Assessment
 
 ### Recommended Architecture

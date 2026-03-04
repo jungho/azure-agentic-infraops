@@ -1,7 +1,9 @@
 ---
 name: challenger-review-subagent
 description: "Adversarial review subagent that challenges Azure infrastructure artifacts. Finds untested assumptions, governance gaps, WAF blind spots, and architectural weaknesses. Returns structured JSON findings to the parent agent. Supports 3-pass rotating-lens reviews for critical steps."
-model: "GPT-5.3-Codex (copilot)"
+model: "Claude Sonnet 4.6 (copilot)"
+# Model rationale: Sonnet 4.6 for all review passes. Provides strong adversarial
+# analysis with lower latency than Opus. Validated via A/B comparison in Phase 10.
 user-invokable: false
 agents: []
 tools: [read, search, web, vscode/askQuestions, "azure-mcp/*"]

@@ -23,14 +23,17 @@ let checked = 0;
 
 console.log("\n🔍 Orphaned Content Validator\n");
 
-// Gather all content from agents and instructions that might reference skills
+// Gather reference corpus from agents, instructions, and top-level config.
+// Skill SKILL.md files are loaded separately (keyed by skill name) so we
+// can exclude a skill's own content when checking whether it is referenced.
 function gatherReferenceContent() {
-  const content = [];
+  const corpus = [];
+  const perSkill = {};
 
   for (const dir of [AGENTS_DIR, path.join(AGENTS_DIR, "_subagents")]) {
     if (!fs.existsSync(dir)) continue;
     for (const f of fs.readdirSync(dir).filter((f) => f.endsWith(".md"))) {
-      content.push(fs.readFileSync(path.join(dir, f), "utf-8"));
+      corpus.push(fs.readFileSync(path.join(dir, f), "utf-8"));
     }
   }
 
@@ -38,34 +41,34 @@ function gatherReferenceContent() {
     for (const f of fs
       .readdirSync(INSTRUCTIONS_DIR)
       .filter((f) => f.endsWith(".md"))) {
-      content.push(fs.readFileSync(path.join(INSTRUCTIONS_DIR, f), "utf-8"));
+      corpus.push(fs.readFileSync(path.join(INSTRUCTIONS_DIR, f), "utf-8"));
     }
   }
 
-  // Also check cross-skill references
+  // Load each skill's SKILL.md keyed by name (for cross-skill minus self)
   for (const skill of fs.readdirSync(SKILLS_DIR, { withFileTypes: true })) {
     if (!skill.isDirectory()) continue;
     const skillPath = path.join(SKILLS_DIR, skill.name, "SKILL.md");
     if (fs.existsSync(skillPath)) {
-      content.push(fs.readFileSync(skillPath, "utf-8"));
+      perSkill[skill.name] = fs.readFileSync(skillPath, "utf-8");
     }
   }
 
-  // Check copilot-instructions and AGENTS.md
+  // Top-level config files
   for (const f of [
     ".github/copilot-instructions.md",
     "AGENTS.md",
     ".github/prompts/plan-agenticWorkflowOverhaul.prompt.md",
   ]) {
-    if (fs.existsSync(f)) content.push(fs.readFileSync(f, "utf-8"));
+    if (fs.existsSync(f)) corpus.push(fs.readFileSync(f, "utf-8"));
   }
 
-  return content.join("\n");
+  return { corpus: corpus.join("\n"), perSkill };
 }
 
-const allContent = gatherReferenceContent();
+const { corpus, perSkill } = gatherReferenceContent();
 
-// Check skills
+// Check skills — exclude the skill's own SKILL.md to prevent self-referencing
 console.log("📁 Skills:");
 const skillDirs = fs
   .readdirSync(SKILLS_DIR, { withFileTypes: true })
@@ -74,11 +77,19 @@ const skillDirs = fs
 
 for (const skill of skillDirs) {
   checked++;
+  // Build search content: agents + instructions + config + OTHER skills (not self)
+  const otherSkills = Object.entries(perSkill)
+    .filter(([name]) => name !== skill)
+    .map(([, content]) => content)
+    .join("\n");
+  const searchContent = corpus + "\n" + otherSkills;
+
   const isReferenced =
-    allContent.includes(`${skill}/SKILL.md`) ||
-    allContent.includes(`skills/${skill}`) ||
-    allContent.includes(`${skill}/references/`) ||
-    allContent.includes(`${skill}` + "/");
+    searchContent.includes(`${skill}/SKILL.md`) ||
+    searchContent.includes(`skills/${skill}`) ||
+    searchContent.includes(`${skill}/references/`) ||
+    searchContent.includes(`${skill}/`) ||
+    searchContent.includes(`\`${skill}\``);
 
   if (!isReferenced) {
     console.log(`  ⚠️  ${skill}/ — not referenced by any agent or instruction`);

@@ -1,9 +1,6 @@
 ---
 name: terraform-patterns
-description: >-
-  Reusable Azure Terraform patterns: hub-spoke, private endpoints, diagnostics, AVM-TF modules.
-  USE FOR: Terraform template design, hub-spoke networking, AVM modules, plan interpretation.
-  DO NOT USE FOR: Bicep code, architecture decisions, troubleshooting, diagram generation.
+description: "Reusable Azure Terraform patterns: hub-spoke, private endpoints, diagnostics, AVM-TF modules. USE FOR: Terraform template design, hub-spoke networking, AVM modules, plan interpretation. DO NOT USE FOR: Bicep code, architecture decisions, troubleshooting, diagram generation."
 compatibility: Requires Terraform >= 1.9, azurerm ~> 4.0, Azure CLI
 ---
 

@@ -1,9 +1,6 @@
 ---
 name: session-resume
-description: >-
-  Session state tracking and resume protocol for the 7-step agent workflow.
-  USE FOR: resume session, persist progress, checkpoint recovery, session-state.json schema.
-  DO NOT USE FOR: Azure infrastructure, code generation, architecture design, troubleshooting.
+description: "Session state tracking and resume protocol for the 7-step agent workflow. USE FOR: resume session, persist progress, checkpoint recovery, session-state.json schema. DO NOT USE FOR: Azure infrastructure, code generation, architecture design, troubleshooting."
 compatibility: All agents (01-Conductor through 08-As-Built)
 ---
 
@@ -21,15 +18,15 @@ checkpoint after any interruption — mid-step, cross-step, or direct invocation
 
 ## Quick Reference
 
-| Concept          | Key Detail                                                    |
-| ---------------- | ------------------------------------------------------------- |
-| State file       | `agent-output/{project}/00-session-state.json`                |
-| Human companion  | `agent-output/{project}/00-handoff.md`                        |
-| Resume detection | Read JSON → check `steps.{N}.status` → branch accordingly    |
-| Status values    | `pending` / `in_progress` / `complete` / `skipped`           |
-| Context budget   | Hard limit on files loaded at startup per step (1-3 files)    |
-| Sub-step tracking| Numbered checkpoint written to `sub_step` after each phase   |
-| Write rule       | Always overwrite full JSON atomically; always update `updated`|
+| Concept           | Key Detail                                                     |
+| ----------------- | -------------------------------------------------------------- |
+| State file        | `agent-output/{project}/00-session-state.json`                 |
+| Human companion   | `agent-output/{project}/00-handoff.md`                         |
+| Resume detection  | Read JSON → check `steps.{N}.status` → branch accordingly      |
+| Status values     | `pending` / `in_progress` / `complete` / `skipped`             |
+| Context budget    | Hard limit on files loaded at startup per step (1-3 files)     |
+| Sub-step tracking | Numbered checkpoint written to `sub_step` after each phase     |
+| Write rule        | Always overwrite full JSON atomically; always update `updated` |
 
 ## Resume Flow (compact)
 
@@ -71,8 +68,8 @@ checkpoint after any interruption — mid-step, cross-step, or direct invocation
 
 ## Reference Index
 
-| Reference | File | Content |
-| --------- | ---- | ------- |
+| Reference         | File                              | Content                                                                                       |
+| ----------------- | --------------------------------- | --------------------------------------------------------------------------------------------- |
 | Recovery Protocol | `references/recovery-protocol.md` | Resume detection, direct invocation, state write protocol, Conductor integration, portability |
-| State File Schema | `references/state-file-schema.md` | Full JSON template, all 7 step definitions, field definitions table |
-| Context Budgets   | `references/context-budgets.md`   | Per-step file budget table, all sub-step checkpoint tables (Steps 1-7) |
+| State File Schema | `references/state-file-schema.md` | Full JSON template, all 7 step definitions, field definitions table                           |
+| Context Budgets   | `references/context-budgets.md`   | Per-step file budget table, all sub-step checkpoint tables (Steps 1-7)                        |

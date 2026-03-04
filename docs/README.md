@@ -35,15 +35,16 @@ See the [conductor agent](../.github/agents/01-conductor.agent.md) for orchestra
 
 ---
 
-## Agents (14 + 9 Subagents)
+## Agents (15 + 9 Subagents)
 
 Agents are interactive AI assistants for specific workflow phases. Invoke via `Ctrl+Shift+A`.
 
 ### Conductor (Master Orchestrator)
 
-| Agent                | Persona    | Purpose                                                |
-| -------------------- | ---------- | ------------------------------------------------------ |
-| `InfraOps Conductor` | 🎼 Maestro | Orchestrates all 7 steps with mandatory approval gates |
+| Agent                   | Persona    | Purpose                                                    |
+| ----------------------- | ---------- | ---------------------------------------------------------- |
+| `InfraOps Conductor`    | 🎼 Maestro | Orchestrates all 7 steps with mandatory approval gates     |
+| `Conductor (Fast Path)` | 🎼 Express | Streamlined 5-step path for simple projects (≤3 resources) |
 
 ### Primary Agents (User-Invokable)
 
@@ -190,7 +191,7 @@ See [prompt-guide/](prompt-guide/) for the full guide.
 ```text
 azure-agentic-infraops/
 ├── .github/
-│   ├── agents/           # 14 agent definitions + 9 subagents
+│   ├── agents/           # 15 agent definitions + 9 subagents
 │   │   └── _subagents/   # Validation subagents (Bicep + Terraform)
 │   ├── skills/           # 18 skill definitions
 │   └── instructions/     # File-type rules (26 instruction files)

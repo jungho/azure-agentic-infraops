@@ -1,9 +1,6 @@
 ---
 name: azure-bicep-patterns
-description: >-
-  Reusable Azure Bicep patterns: hub-spoke, private endpoints, diagnostics, AVM composition.
-  USE FOR: Bicep template design, hub-spoke networking, private endpoint patterns, AVM modules.
-  DO NOT USE FOR: Terraform code, architecture decisions, troubleshooting, diagram generation.
+description: "Reusable Azure Bicep patterns: hub-spoke, private endpoints, diagnostics, AVM composition. USE FOR: Bicep template design, hub-spoke networking, private endpoint patterns, AVM modules. DO NOT USE FOR: Terraform code, architecture decisions, troubleshooting, diagram generation."
 compatibility: Requires Azure CLI with Bicep extension
 ---
 
