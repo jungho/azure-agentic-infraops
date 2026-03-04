@@ -1,3 +1,4 @@
+<!-- ref:ui-wireframe-diagrams-v1 -->
 # UI Wireframe Diagrams
 
 Generate professional UI wireframe mockups showing screen layouts and components.

@@ -1,3 +1,4 @@
+<!-- ref:sequence-auth-flows-v1 -->
 # Sequence and Authentication Flow Diagrams
 
 Guide for creating clean authentication flows, sequence diagrams, and numbered step flows.

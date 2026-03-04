@@ -1,3 +1,4 @@
+<!-- ref:common-patterns-v1 -->
 # Common Azure Architecture Patterns
 
 Ready-to-use patterns for Azure architecture diagrams.

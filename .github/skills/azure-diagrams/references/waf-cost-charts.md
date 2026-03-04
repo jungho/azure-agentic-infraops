@@ -1,3 +1,4 @@
+<!-- ref:waf-cost-charts-v1 -->
 # WAF Pillar & Cost Visualization Charts
 
 Generate professional, styled data-visualization charts for Azure Well-Architected

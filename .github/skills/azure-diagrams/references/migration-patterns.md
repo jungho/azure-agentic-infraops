@@ -1,3 +1,4 @@
+<!-- ref:migration-patterns-v1 -->
 # Integration Migration Patterns
 
 Common migration scenarios for Transparity presales - from legacy integration platforms to Azure Integration Services.

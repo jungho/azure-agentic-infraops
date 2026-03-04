@@ -1,3 +1,4 @@
+<!-- ref:business-process-flows-v1 -->
 # Business Process Flow Diagrams
 
 Generate professional business process flow diagrams showing user actions, system steps, and outcomes.

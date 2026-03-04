@@ -1,3 +1,4 @@
+<!-- ref:repo-architecture-v1 -->
 # Repo Architecture Reference
 
 > For use by the `docs-writer` skill. Last verified: 2026-02-26.

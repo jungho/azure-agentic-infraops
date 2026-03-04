@@ -1,3 +1,4 @@
+<!-- ref:entity-relationship-diagrams-v1 -->
 # Entity Relationship Diagrams (ERD)
 
 Generate professional database entity relationship diagrams showing tables, columns, and relationships.

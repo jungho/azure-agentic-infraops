@@ -1,3 +1,4 @@
+<!-- ref:doc-standards-v1 -->
 # Documentation Standards Reference
 
 > For use by the `docs-writer` skill. Consolidates rules from

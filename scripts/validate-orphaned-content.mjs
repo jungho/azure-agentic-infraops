@@ -78,7 +78,8 @@ for (const skill of skillDirs) {
     allContent.includes(`${skill}/SKILL.md`) ||
     allContent.includes(`skills/${skill}`) ||
     allContent.includes(`${skill}/references/`) ||
-    allContent.includes(`${skill}` + "/");
+    allContent.includes(`${skill}/`) ||
+    allContent.includes(`\`${skill}\``);
 
   if (!isReferenced) {
     console.log(`  ⚠️  ${skill}/ — not referenced by any agent or instruction`);

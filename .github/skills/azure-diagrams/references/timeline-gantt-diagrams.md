@@ -1,3 +1,4 @@
+<!-- ref:timeline-gantt-diagrams-v1 -->
 # Timeline and Gantt Diagrams
 
 Generate professional timeline, roadmap, and Gantt chart diagrams for project planning.

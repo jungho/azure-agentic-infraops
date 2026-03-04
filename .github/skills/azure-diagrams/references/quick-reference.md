@@ -1,3 +1,4 @@
+<!-- ref:quick-reference-v1 -->
 # Quick Reference Card
 
 Copy-paste snippets for rapid diagram creation.

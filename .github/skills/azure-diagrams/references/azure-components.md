@@ -1,3 +1,4 @@
+<!-- ref:azure-components-v1 -->
 # Azure Components Reference
 
 Complete list of 700+ Azure components available in the `diagrams` library with official Microsoft icons.

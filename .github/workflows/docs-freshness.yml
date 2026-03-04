@@ -1,0 +1,53 @@
+name: Docs & Agent Freshness Check
+
+on:
+  schedule:
+    # Every Monday at 06:00 UTC
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  freshness:
+    name: Check docs freshness
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - run: npm ci
+
+      - name: Run freshness check
+        id: freshness
+        run: |
+          npm run lint:docs-freshness 2>&1 | tee freshness-output.txt
+          EXIT_CODE=${PIPESTATUS[0]}
+          echo "exit_code=$EXIT_CODE" >> "$GITHUB_OUTPUT"
+
+      - name: Check for issues
+        if: steps.freshness.outputs.exit_code != '0'
+        run: |
+          BODY=$(cat freshness-output.txt)
+          gh issue create \
+            --title "Docs freshness: staleness detected ($(date +%Y-%m-%d))" \
+            --body "## Automatic Freshness Check Failed
+
+          The weekly docs freshness check found issues:
+
+          \`\`\`
+          $BODY
+          \`\`\`
+
+          **Action required**: Review the findings above and update stale documentation.
+
+          Run \`npm run lint:docs-freshness\` locally to reproduce." \
+            --label "documentation,maintenance"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

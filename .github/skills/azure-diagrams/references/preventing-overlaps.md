@@ -1,3 +1,4 @@
+<!-- ref:preventing-overlaps-v1 -->
 # Preventing Overlaps in Complex Diagrams
 
 Guide for avoiding node and edge overlaps in Graphviz-based diagrams.

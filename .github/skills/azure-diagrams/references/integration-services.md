@@ -1,3 +1,4 @@
+<!-- ref:integration-services-v1 -->
 # Azure Integration Components Reference
 
 Complete import reference for Azure architecture diagrams.

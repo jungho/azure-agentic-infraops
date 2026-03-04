@@ -1,3 +1,4 @@
+<!-- ref:token-estimation-v1 -->
 # Token Estimation Reference
 
 Detailed heuristics for estimating context window token costs from observable
