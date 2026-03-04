@@ -1,4 +1,5 @@
 <!-- ref:state-file-schema-v1 -->
+
 # State File Schema: `00-session-state.json`
 
 ## Full Template

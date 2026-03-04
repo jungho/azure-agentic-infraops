@@ -1,4 +1,5 @@
 <!-- ref:private-endpoint-pattern-v1 -->
+
 # Private Endpoint Wiring Pattern
 
 Standard three-resource pattern for private connectivity.

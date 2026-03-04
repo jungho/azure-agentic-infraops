@@ -1,4 +1,5 @@
 <!-- ref:health-checks-v1 -->
+
 # Per-Resource Health Checks
 
 Diagnostic commands and metric thresholds for each Azure resource type.
@@ -61,7 +62,7 @@ If no diagnostic settings exist, create them using the pattern from the
 ## SQL Database
 
 | Check               | Command / Query                                                      | Healthy Threshold    |
-| -------------------- | -------------------------------------------------------------------- | -------------------- |
+| ------------------- | -------------------------------------------------------------------- | -------------------- |
 | DTU/vCore usage     | KQL: `AzureMetrics \| where MetricName == "dtu_consumption_percent"` | < 80% sustained      |
 | Connection failures | KQL: `AzureMetrics \| where MetricName == "connection_failed"`       | < 5 per 5-min window |
 | Deadlocks           | KQL: `AzureMetrics \| where MetricName == "deadlock"`                | 0                    |

@@ -1,4 +1,5 @@
 <!-- ref:avm-pitfalls-v1 -->
+
 # Terraform AVM Known Pitfalls
 
 ## Set-Type Attribute Phantom Diffs

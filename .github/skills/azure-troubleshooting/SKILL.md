@@ -30,11 +30,11 @@ remediation. Load reference files for detailed queries, checks, and playbooks.
 
 Load these files for detailed procedures:
 
-| Reference | Contents |
-| --------- | -------- |
-| `references/kql-templates.md` | Resource Graph discovery, App Service / VM / generic error KQL, activity log queries |
-| `references/health-checks.md` | Diagnostic settings check, per-resource health tables (App Service, VM, Storage, SQL, Static Web Apps) |
-| `references/remediation-playbooks.md` | Six-phase diagnostic workflow, report template, CPU / throttling / DTU playbooks |
+| Reference                             | Contents                                                                                               |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `references/kql-templates.md`         | Resource Graph discovery, App Service / VM / generic error KQL, activity log queries                   |
+| `references/health-checks.md`         | Diagnostic settings check, per-resource health tables (App Service, VM, Storage, SQL, Static Web Apps) |
+| `references/remediation-playbooks.md` | Six-phase diagnostic workflow, report template, CPU / throttling / DTU playbooks                       |
 
 ---
 

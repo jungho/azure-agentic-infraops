@@ -1,4 +1,5 @@
 <!-- ref:hub-spoke-pattern-v1 -->
+
 # Hub-Spoke Networking Pattern
 
 Standard pattern using AVM-TF VNet module with peering.

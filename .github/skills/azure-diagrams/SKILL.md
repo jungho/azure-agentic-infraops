@@ -36,11 +36,11 @@ python3 agent-output/{project}/03-des-diagram.py
 
 ### Required outputs
 
-| Step | Files |
-|------|-------|
-| 3 | `03-des-diagram.py/.png` |
-| 4 | `04-dependency-diagram.py/.png`, `04-runtime-diagram.py/.png` |
-| 7 | `07-ab-diagram.py/.png` (when requested) |
+| Step | Files                                                         |
+| ---- | ------------------------------------------------------------- |
+| 3    | `03-des-diagram.py/.png`                                      |
+| 4    | `04-dependency-diagram.py/.png`, `04-runtime-diagram.py/.png` |
+| 7    | `07-ab-diagram.py/.png` (when requested)                      |
 
 ### Naming conventions
 
@@ -96,14 +96,14 @@ See `references/iac-to-diagram.md` to generate diagrams from Bicep/Terraform/ARM
 
 ## Workflow Integration
 
-| Step | Files | Description |
-|------|-------|-------------|
-| 2 | `02-waf-scores.py/.png` | WAF pillar score bar chart |
-| 3 | `03-des-diagram.py/.png` | Proposed architecture |
-| 3 | `03-des-cost-distribution.py/.png`, `03-des-cost-projection.py/.png` | Cost donut + projection |
-| 7 | `07-ab-diagram.py/.png` | Deployed architecture |
-| 7 | `07-ab-cost-*.py/.png` | Cost distribution, projection, comparison |
-| 7 | `07-ab-compliance-gaps.py/.png` | Compliance gaps by severity |
+| Step | Files                                                                | Description                               |
+| ---- | -------------------------------------------------------------------- | ----------------------------------------- |
+| 2    | `02-waf-scores.py/.png`                                              | WAF pillar score bar chart                |
+| 3    | `03-des-diagram.py/.png`                                             | Proposed architecture                     |
+| 3    | `03-des-cost-distribution.py/.png`, `03-des-cost-projection.py/.png` | Cost donut + projection                   |
+| 7    | `07-ab-diagram.py/.png`                                              | Deployed architecture                     |
+| 7    | `07-ab-cost-*.py/.png`                                               | Cost distribution, projection, comparison |
+| 7    | `07-ab-compliance-gaps.py/.png`                                      | Compliance gaps by severity               |
 
 Suffix rules: `-des` for design (Step 3), `-ab` for as-built (Step 7).
 
@@ -145,27 +145,27 @@ build dashboards · render Mermaid diagrams.
 
 ## Scripts
 
-| Script | Purpose |
-|--------|---------|
-| `scripts/generate_diagram.py` | Interactive pattern generator |
-| `scripts/multi_diagram_generator.py` | Multi-type diagram generator |
-| `scripts/ascii_to_diagram.py` | Convert ASCII diagrams from markdown |
-| `scripts/verify_installation.py` | Check prerequisites |
+| Script                               | Purpose                              |
+| ------------------------------------ | ------------------------------------ |
+| `scripts/generate_diagram.py`        | Interactive pattern generator        |
+| `scripts/multi_diagram_generator.py` | Multi-type diagram generator         |
+| `scripts/ascii_to_diagram.py`        | Convert ASCII diagrams from markdown |
+| `scripts/verify_installation.py`     | Check prerequisites                  |
 
 ## Reference Index
 
-| File | Content |
-|------|---------|
-| `references/azure-components.md` | Complete list of 700+ Azure diagram components |
-| `references/business-process-flows.md` | Workflow and swimlane diagram patterns |
-| `references/common-patterns.md` | Ready-to-use architecture patterns (3-tier, microservices, serverless, hub-spoke) |
-| `references/entity-relationship-diagrams.md` | Database ERD patterns |
-| `references/iac-to-diagram.md` | Generate diagrams from Bicep/Terraform/ARM templates |
-| `references/integration-services.md` | Integration service diagram patterns |
-| `references/migration-patterns.md` | Migration architecture patterns |
-| `references/preventing-overlaps.md` | Layout troubleshooting and overlap prevention |
-| `references/quick-reference.md` | Copy-paste snippets: connections, attributes, clusters, templates |
-| `references/sequence-auth-flows.md` | Authentication flow sequence patterns |
-| `references/timeline-gantt-diagrams.md` | Project timeline and Gantt diagrams |
-| `references/ui-wireframe-diagrams.md` | UI mockup and wireframe patterns |
-| `references/waf-cost-charts.md` | WAF pillar bar, cost donut & projection chart implementations |
+| File                                         | Content                                                                           |
+| -------------------------------------------- | --------------------------------------------------------------------------------- |
+| `references/azure-components.md`             | Complete list of 700+ Azure diagram components                                    |
+| `references/business-process-flows.md`       | Workflow and swimlane diagram patterns                                            |
+| `references/common-patterns.md`              | Ready-to-use architecture patterns (3-tier, microservices, serverless, hub-spoke) |
+| `references/entity-relationship-diagrams.md` | Database ERD patterns                                                             |
+| `references/iac-to-diagram.md`               | Generate diagrams from Bicep/Terraform/ARM templates                              |
+| `references/integration-services.md`         | Integration service diagram patterns                                              |
+| `references/migration-patterns.md`           | Migration architecture patterns                                                   |
+| `references/preventing-overlaps.md`          | Layout troubleshooting and overlap prevention                                     |
+| `references/quick-reference.md`              | Copy-paste snippets: connections, attributes, clusters, templates                 |
+| `references/sequence-auth-flows.md`          | Authentication flow sequence patterns                                             |
+| `references/timeline-gantt-diagrams.md`      | Project timeline and Gantt diagrams                                               |
+| `references/ui-wireframe-diagrams.md`        | UI mockup and wireframe patterns                                                  |
+| `references/waf-cost-charts.md`              | WAF pillar bar, cost donut & projection chart implementations                     |

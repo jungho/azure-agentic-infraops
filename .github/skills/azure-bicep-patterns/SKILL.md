@@ -16,15 +16,15 @@ Reusable infrastructure patterns for Azure Bicep templates. Complements
 
 ## Quick Reference
 
-| Pattern                  | When to Use                                      | Reference                                                    |
-| ------------------------ | ------------------------------------------------ | ------------------------------------------------------------ |
-| Hub-Spoke Networking     | Multi-workload environments with shared services | [hub-spoke-pattern](references/hub-spoke-pattern.md)         |
+| Pattern                  | When to Use                                      | Reference                                                          |
+| ------------------------ | ------------------------------------------------ | ------------------------------------------------------------------ |
+| Hub-Spoke Networking     | Multi-workload environments with shared services | [hub-spoke-pattern](references/hub-spoke-pattern.md)               |
 | Private Endpoint Wiring  | Any PaaS service requiring private connectivity  | [private-endpoint-pattern](references/private-endpoint-pattern.md) |
-| Diagnostic Settings      | Every deployed resource (mandatory)              | [common-patterns](references/common-patterns.md)             |
-| Conditional Deployment   | Optional resources controlled by parameters      | [common-patterns](references/common-patterns.md)             |
-| Module Composition       | Breaking main.bicep into reusable modules        | [common-patterns](references/common-patterns.md)             |
-| Managed Identity Binding | Any service-to-service authentication            | [common-patterns](references/common-patterns.md)             |
-| What-If / AVM Pitfalls   | Pre-deployment validation & AVM gotchas          | [avm-pitfalls](references/avm-pitfalls.md)                   |
+| Diagnostic Settings      | Every deployed resource (mandatory)              | [common-patterns](references/common-patterns.md)                   |
+| Conditional Deployment   | Optional resources controlled by parameters      | [common-patterns](references/common-patterns.md)                   |
+| Module Composition       | Breaking main.bicep into reusable modules        | [common-patterns](references/common-patterns.md)                   |
+| Managed Identity Binding | Any service-to-service authentication            | [common-patterns](references/common-patterns.md)                   |
+| What-If / AVM Pitfalls   | Pre-deployment validation & AVM gotchas          | [avm-pitfalls](references/avm-pitfalls.md)                         |
 
 ---
 
@@ -61,12 +61,12 @@ Accept `name`, `location`, `tags`, `logAnalyticsWorkspaceName`; output `resource
 
 ## Reference Index
 
-| File                                                                  | Content                                                          |
-| --------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| [hub-spoke-pattern.md](references/hub-spoke-pattern.md)               | Hub-spoke VNet orchestration with peering                        |
-| [private-endpoint-pattern.md](references/private-endpoint-pattern.md) | PE wiring + DNS zone groups + group ID table                     |
+| File                                                                  | Content                                                               |
+| --------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| [hub-spoke-pattern.md](references/hub-spoke-pattern.md)               | Hub-spoke VNet orchestration with peering                             |
+| [private-endpoint-pattern.md](references/private-endpoint-pattern.md) | PE wiring + DNS zone groups + group ID table                          |
 | [common-patterns.md](references/common-patterns.md)                   | Diagnostics, conditional deploy, module composition, managed identity |
-| [avm-pitfalls.md](references/avm-pitfalls.md)                         | What-if interpretation, AVM gotchas, learn more links            |
+| [avm-pitfalls.md](references/avm-pitfalls.md)                         | What-if interpretation, AVM gotchas, learn more links                 |
 
 ---
 

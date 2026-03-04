@@ -1,4 +1,5 @@
 <!-- ref:kql-templates-v1 -->
+
 # KQL Query Templates
 
 Reusable KQL queries for Azure resource diagnostics and log analysis.

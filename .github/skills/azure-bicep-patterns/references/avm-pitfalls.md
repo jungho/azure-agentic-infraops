@@ -1,4 +1,5 @@
 <!-- ref:avm-pitfalls-v1 -->
+
 # AVM Pitfalls & What-If Interpretation
 
 Known gotchas when using Azure Verified Modules and pre-deployment validation.

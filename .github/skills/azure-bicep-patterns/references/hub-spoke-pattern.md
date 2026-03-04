@@ -1,4 +1,5 @@
 <!-- ref:hub-spoke-pattern-v1 -->
+
 # Hub-Spoke Networking Pattern
 
 Standard pattern for shared services hub with workload spokes.

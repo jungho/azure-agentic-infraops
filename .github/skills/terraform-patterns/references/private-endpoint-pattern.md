@@ -1,4 +1,5 @@
 <!-- ref:private-endpoint-pattern-v1 -->
+
 # Private Endpoint Pattern
 
 Standard three-resource pattern using AVM-TF private endpoint module.
@@ -52,7 +53,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "blob" {
 | Storage (File) | `file`      | `privatelink.file.core.windows.net`  |
 | Key Vault      | `vault`     | `privatelink.vaultcore.azure.net`    |
 | SQL Server     | `sqlServer` | `privatelink.database.windows.net`   |
-| Container Reg. | `registry`  | `privatelink.azurecr.io`            |
+| Container Reg. | `registry`  | `privatelink.azurecr.io`             |
 | App Service    | `sites`     | `privatelink.azurewebsites.net`      |
 | Service Bus    | `namespace` | `privatelink.servicebus.windows.net` |
 | Cosmos DB      | `Sql`       | `privatelink.documents.azure.com`    |

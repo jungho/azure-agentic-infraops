@@ -1,4 +1,5 @@
 <!-- ref:context-budgets-v1 -->
+
 # Context Budgets & Sub-Step Checkpoints
 
 ## Context Budget Table

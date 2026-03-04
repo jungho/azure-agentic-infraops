@@ -1,4 +1,5 @@
 <!-- ref:plan-interpretation-v1 -->
+
 # Terraform Plan Interpretation
 
 Reading `terraform plan` output to assess impact before applying.

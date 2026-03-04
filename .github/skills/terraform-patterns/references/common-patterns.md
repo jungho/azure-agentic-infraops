@@ -1,4 +1,5 @@
 <!-- ref:common-patterns-v1 -->
+
 # Common Terraform Patterns
 
 Diagnostic settings, conditional deployment, module composition, and managed identity patterns.
