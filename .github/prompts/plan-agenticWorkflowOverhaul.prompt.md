@@ -12,31 +12,31 @@ that phase, and continue execution.
 
 ### Milestone 1: Core Optimization (Phases 0-6) — ~15-20 hrs
 
-| Phase | Title                            | Status      | Blocker |
-| ----: | -------------------------------- | ----------- | ------- |
-|     0 | Baseline & KPI Definition        | complete    | —       |
-|     1 | P0 Skill Splits                  | complete    | —       |
-|     2 | Instruction Optimization + Dedup | complete    | —       |
-|     3 | Instruction Splits               | complete    | —       |
-|     4 | Error Rate & Burst Reduction     | complete    | —       |
-|     5 | Agent Body Optimization          | complete    | —       |
-|     6 | M1 Measurement Gate              | complete    | —       |
+| Phase | Title                            | Status   | Blocker |
+| ----: | -------------------------------- | -------- | ------- |
+|     0 | Baseline & KPI Definition        | complete | —       |
+|     1 | P0 Skill Splits                  | complete | —       |
+|     2 | Instruction Optimization + Dedup | complete | —       |
+|     3 | Instruction Splits               | complete | —       |
+|     4 | Error Rate & Burst Reduction     | complete | —       |
+|     5 | Agent Body Optimization          | complete | —       |
+|     6 | M1 Measurement Gate              | complete | —       |
 
 ### Milestone 2: Extended Optimization (Phases 7-9) — ~10-15 hrs
 
-| Phase | Title                          | Status      | Blocker |
-| ----: | ------------------------------ | ----------- | ------- |
-|     7 | CI Enforcement Validators      | not-started | —       |
-|     8 | Remaining Skill Splits         | not-started | —       |
-|     9 | Subagent Overhaul + iac-common | not-started | —       |
+| Phase | Task | Detail File                        | Status      | Blocker |
+| ----: | ---- | ---------------------------------- | ----------- | ------- |
+|   7   | M2-A | `m2-a-ci-enforcement.md`           | not-started | —       |
+|   8   | M2-B | `m2-b-skill-splits.md`             | not-started | —       |
+|   9   | M2-C | `m2-c-subagent-overhaul.md`        | not-started | —       |
 
 ### Milestone 3: New Capabilities (Phases 10-12) — ~10-15 hrs
 
-| Phase | Title                         | Status      | Blocker |
-| ----: | ----------------------------- | ----------- | ------- |
-|    10 | Challenger Model & Fast Path  | not-started | —       |
-|    11 | Doc-Gardening & GC Automation | not-started | —       |
-|    12 | Final Measurement & Ship      | not-started | —       |
+| Phase | Task | Detail File                        | Status      | Blocker |
+| ----: | ---- | ---------------------------------- | ----------- | ------- |
+|  10   | M3-A | `m3-a-challenger-fastpath.md`      | not-started | —       |
+|  11   | M3-B | `m3-b-doc-gardening.md`            | not-started | —       |
+|  12   | M3-C | `m3-c-final-measurement.md`        | not-started | —       |
 
 ### KPI Targets
 
@@ -53,8 +53,8 @@ that phase, and continue execution.
 | 2025-07-03 | 1       | 0, 1             | Removed phantom toolsets ref; split azure-defaults (702->141) and azure-artifacts (614->102); 16 ref files; 9 skill descs optimized; validator + parser fixes. Commits: fcb4327, b0de949. |
 | 2026-03-03 | 2       | 2, 3, 4          | Glob narrows + dedup (d883b37); instruction splits 1660->389 lines (97e0dcb); validator remediation messages (85c4a8b).                                                                   |
 | 2026-03-03 | 3       | 5 (partial)      | Phase 5 research complete: detailed extraction plan for 06t (501->~300) and 05t (443->~295). Implementation not started. Full state in agent-output/\_meta/ctx-opt-session-state.md.      |
-| 2026-03-04 | 4       | 5                | Phase 5 implementation: 7 agents trimmed (6416->5574 total, 13%); 3 TF ref files created; DO/DON'T->tables; Boundaries added to all 14 agents. Commit: d0b142a.                         |
-| 2026-03-04 | 5       | 6                | M1 gate: baseline snapshot from main, diff report generated. Agents -15%, Skills -20%, Instructions -32%. 43 ref files (on-demand). PR created.                                          |
+| 2026-03-04 | 4       | 5                | Phase 5 implementation: 7 agents trimmed (6416->5574 total, 13%); 3 TF ref files created; DO/DON'T->tables; Boundaries added to all 14 agents. Commit: d0b142a.                           |
+| 2026-03-04 | 5       | 6                | M1 gate: baseline snapshot from main, diff report generated. Agents -15%, Skills -20%, Instructions -32%. 43 ref files (on-demand). PR created.                                           |
 
 ---
 
@@ -82,13 +82,17 @@ This file has the exact resume checklist. Follow it before proceeding.
 Based on the active milestone, read ONLY the detail file listed below.
 Do NOT load other milestone files — they are out of scope.
 
-| Active Milestone         | Detail File                                               | Max Additional Reads            |
-| ------------------------ | --------------------------------------------------------- | ------------------------------- |
-| M1 (Phases 0-6)          | `.github/prompts/plan-ctxopt/m1-core-optimization.md`     | 3 (target files being modified) |
-| M2 (Phases 7-9)          | `.github/prompts/plan-ctxopt/m2-extended-optimization.md` | 3                               |
-| M3 (Phases 10-12)        | `.github/prompts/plan-ctxopt/m3-new-capabilities.md`      | 3                               |
-| Decisions/Risk questions | `.github/prompts/plan-ctxopt/appendix-decisions.md`       | 0                               |
-| Findings traceability    | `.github/prompts/plan-ctxopt/appendix-findings.md`        | 0                               |
+| Active Phase | Detail File                                               | Max Additional Reads            |
+| ------------ | --------------------------------------------------------- | ------------------------------- |
+| M1 (0-6)     | `.github/prompts/plan-ctxopt/m1-core-optimization.md`     | 3 (target files being modified) |
+| M2-A (7)     | `.github/prompts/plan-ctxopt/m2-a-ci-enforcement.md`      | 3                               |
+| M2-B (8)     | `.github/prompts/plan-ctxopt/m2-b-skill-splits.md`        | 3                               |
+| M2-C (9)     | `.github/prompts/plan-ctxopt/m2-c-subagent-overhaul.md`   | 3                               |
+| M3-A (10)    | `.github/prompts/plan-ctxopt/m3-a-challenger-fastpath.md`  | 3                               |
+| M3-B (11)    | `.github/prompts/plan-ctxopt/m3-b-doc-gardening.md`        | 3                               |
+| M3-C (12)    | `.github/prompts/plan-ctxopt/m3-c-final-measurement.md`    | 3                               |
+| Decisions    | `.github/prompts/plan-ctxopt/appendix-decisions.md`       | 0                               |
+| Findings     | `.github/prompts/plan-ctxopt/appendix-findings.md`        | 0                               |
 
 ### Step 3 — Verify branch state
 
@@ -150,7 +154,7 @@ Run 2x adversarial reviews (Sonnet 4.6 + GPT 5.3 lenses) at these points:
 | Total effort  | ~35-50 hrs                                                  |
 | Validation    | `npm run validate:all` after every phase                    |
 | Canary tests  | After Phases 1, 5, 9                                        |
-| Detail files  | `.github/prompts/plan-ctxopt/m1-*.md`, `m2-*.md`, `m3-*.md` |
+| Detail files  | `.github/prompts/plan-ctxopt/m1-*.md`, `m2-a/b/c-*.md`, `m3-a/b/c-*.md` |
 | Appendices    | `appendix-findings.md`, `appendix-decisions.md`             |
 | Source report | `agent-output/_meta/11-context-optimization-report.md`      |
 | Original plan | `agent-output/_meta/11-implementation-plan.md`              |
