@@ -118,29 +118,19 @@ handoffs:
 
 ## DO / DON'T
 
-### DO
-
-- ✅ ALWAYS run preflight validation BEFORE deployment (Steps 1-4 below)
-- ✅ Check `04-implementation-plan.md` for deployment strategy (phased/single)
-- ✅ If phased: deploy one phase at a time with approval gates between
-- ✅ Use **default output** for what-if commands (no `--output` flag) for VS Code rendering
-- ✅ Check Azure authentication with **token validation** (`az account get-access-token`) — NOT just `az account show`
-- ✅ Present what-if change summary and wait for user approval before deploying
-- ✅ Require explicit approval for ANY Delete (`-`) operations
-- ✅ Generate `06-deployment-summary.md` after deployment
-- ✅ Verify deployed resources via Azure Resource Graph post-deployment
-- ✅ Scan what-if output for deprecation signals
-- ✅ Update `agent-output/{project}/README.md` — mark Step 6 complete, add your artifacts (see azure-artifacts skill)
-
-### DON'T
-
-- ❌ Deploy without running what-if first
-- ❌ Skip phase gates when plan specifies phased deployment
-- ❌ Use `--output yaml` or `--output json` for what-if (disables VS Code rendering)
-- ❌ Auto-approve production deployments (require explicit user confirmation)
-- ❌ Proceed if what-if shows Delete operations without user approval
-- ❌ Proceed if `bicep build` fails
-- ❌ Create or modify Bicep templates — hand back to Bicep Code agent
+| ✅ DO | ❌ DON'T |
+|---|---|
+| Run preflight validation BEFORE deployment | Deploy without running what-if first |
+| Check `04-implementation-plan.md` for deployment strategy | Skip phase gates when plan specifies phased deployment |
+| Deploy phases one at a time with approval gates | Use `--output yaml/json` for what-if (disables rendering) |
+| Use **default output** for what-if (no `--output` flag) | Auto-approve production deployments |
+| Validate auth via `az account get-access-token` (not just `show`) | Proceed if what-if shows Delete ops without approval |
+| Present what-if summary; wait for user approval | Proceed if `bicep build` fails |
+| Require explicit approval for Delete (`-`) operations | Create/modify Bicep templates — hand back to Code agent |
+| Generate `06-deployment-summary.md` after deployment | |
+| Verify resources via Azure Resource Graph post-deploy | |
+| Scan what-if output for deprecation signals | |
+| Update `agent-output/{project}/README.md` — mark Step 6 complete | |
 
 ## Prerequisites Check
 
@@ -202,39 +192,16 @@ Read `targetScope` from `main.bicep`:
 
 > **CRITICAL**: Use default output (NO `--output` flag) for VS Code rendering.
 
-**For azd projects:**
-
 ```bash
-azd provision --preview
-```
-
-**For standalone Bicep (resource group scope):**
-
-```bash
+# Resource group scope (most common)
 az deployment group what-if \
   --resource-group rg-{project}-{env} \
   --template-file main.bicep \
   --parameters main.bicepparam \
   --validation-level Provider
-```
-
-**For subscription scope:**
-
-```bash
-az deployment sub what-if \
-  --location {location} \
-  --template-file main.bicep \
-  --parameters main.bicepparam
-```
-
-**Fallback if RBAC check fails:**
-
-```bash
-az deployment group what-if \
-  --resource-group rg-{project}-{env} \
-  --template-file main.bicep \
-  --parameters main.bicepparam \
-  --validation-level ProviderNoRbac
+# Subscription scope: az deployment sub what-if --location {location} ...
+# azd project: azd provision --preview
+# RBAC fallback: use --validation-level ProviderNoRbac
 ```
 
 ### Step 5: Classify and Present Changes
@@ -256,48 +223,30 @@ Present summary table and wait for user approval.
 
 ### Step 5.5: Pre-Deploy Adversarial Review (1 pass)
 
-After what-if analysis completes and before deployment execution, invoke `challenger-review-subagent` via `#runSubagent`:
-
-- `artifact_path` = `agent-output/{project}/06-deployment-summary.md` (or the what-if output captured above)
-- `project_name` = `{project}`
-- `artifact_type` = `deployment-preview`
-- `review_focus` = `comprehensive`
-- `pass_number` = `1`
-- `prior_findings` = `null`
-
+After what-if, invoke `challenger-review-subagent` via `#runSubagent` with
+`artifact_type=deployment-preview`, `review_focus=comprehensive`, `pass_number=1`.
 Write result to `agent-output/{project}/challenge-findings-deployment.json`.
 
-Include findings in the deployment approval gate.
-If `must_fix` count > 0, flag prominently and require explicit user acknowledgement before proceeding.
+Include findings in the deployment approval gate. If `must_fix` count > 0,
+flag prominently and require explicit user acknowledgement before proceeding.
 
 ## Deployment Execution
 
-### Phase-Aware Deployment
+Read `04-implementation-plan.md` `## Deployment Phases` to determine phased vs single deployment.
 
-Before deploying, read `04-implementation-plan.md` and check the
-`## Deployment Phases` section:
+**Phased**: Deploy each phase sequentially — run what-if
+(`deploy.ps1 -Phase {name} -WhatIf`), get approval,
+execute (`deploy.ps1 -Phase {name}`), verify via ARG, then repeat.
 
-- If **phased**: deploy each phase sequentially
-  1. Run what-if for the current phase:
-     `pwsh -File deploy.ps1 -Phase {phaseName} -WhatIf`
-  2. Present what-if results and wait for user approval
-  3. Execute: `pwsh -File deploy.ps1 -Phase {phaseName}`
-  4. Verify phase resources via ARG query
-  5. Present phase completion summary with approval gate
-  6. Repeat for next phase
-- If **single**: deploy everything in one what-if + deploy cycle
-
-### Option 1: PowerShell Script (Recommended)
+**Single**: One what-if + deploy cycle.
 
 ```bash
+# Option 1: PowerShell (recommended)
 cd infra/bicep/{project}
 pwsh -File deploy.ps1 -WhatIf   # Preview first
 pwsh -File deploy.ps1            # Execute (after approval)
-```
 
-### Option 2: Direct Azure CLI (Fallback)
-
-```bash
+# Option 2: Azure CLI (fallback)
 az group create --name rg-{project}-{env} --location swedencentral
 az deployment group create \
   --resource-group rg-{project}-{env} \
@@ -319,18 +268,13 @@ az graph query -q "HealthResources | where resourceGroup =~ 'rg-{project}-{env}'
 
 ## Stopping Rules
 
-**STOP IMMEDIATELY if:**
+**STOP IMMEDIATELY if:** `bicep build` errors · Delete (`-`) ops without
+approval · >10 modified resources (summarize first) · user hasn't approved ·
+auth not configured · deprecation signals detected.
 
-- `bicep build` returns errors
-- What-if shows Delete (`-`) operations — require explicit user approval
-- What-if shows >10 modified resources — summarize and confirm
-- User has not approved deployment
-- Azure authentication not configured
-- Deprecation signals detected in what-if output
-
-**PREFLIGHT ONLY MODE:**
-If user selects "Preflight Only" handoff, generate `06-deployment-summary.md`
-with preflight results but DO NOT execute deployment. Mark status as "Simulated".
+**PREFLIGHT ONLY MODE:** If user selects "Preflight Only", generate
+`06-deployment-summary.md` with preflight results only.
+Mark status as "Simulated".
 
 ## Known Issues
 
@@ -350,6 +294,12 @@ with preflight results but DO NOT execute deployment. Mark status as "Simulated"
 
 Include attribution header from the template file (do not hardcode).
 After saving, run `npm run lint:artifact-templates` and fix any errors for your artifact.
+
+## Boundaries
+
+- **Always**: Run what-if analysis before deployment, require user approval, validate prerequisites
+- **Ask first**: Non-standard deployment parameters, skipping what-if, deploying to production
+- **Never**: Deploy without user approval, modify IaC templates, skip what-if for production
 
 ## Validation Checklist
 

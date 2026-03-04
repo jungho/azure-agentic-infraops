@@ -362,6 +362,12 @@ Reply "approve" to proceed to {iac}-plan, or provide feedback.
 
 Include attribution header from the template file (do not hardcode).
 
+## Boundaries
+
+- **Always**: Evaluate against WAF pillars, generate cost estimates, document architecture decisions
+- **Ask first**: Non-standard SKU/tier selections, deviation from Well-Architected recommendations
+- **Never**: Generate IaC code, skip WAF evaluation, deploy infrastructure
+
 ## Validation Checklist
 
 - [ ] All 5 WAF pillars scored with rationale and confidence level

@@ -252,6 +252,12 @@ az graph query -q "resources | where resourceGroup == '{rg-name}' | project name
 | Design vs As-Built Chart  | `agent-output/{project}/07-ab-cost-comparison.png`   |
 | Compliance Gaps Chart     | `agent-output/{project}/07-ab-compliance-gaps.png`   |
 
+## Boundaries
+
+- **Always**: Read all prior artifacts (Steps 1-6), generate complete documentation suite, verify deployment state
+- **Ask first**: Non-standard documentation formats, skipping optional sections
+- **Never**: Modify deployed infrastructure, change IaC templates, skip prior artifact review
+
 ## Validation Checklist
 
 - [ ] All prior artifacts (01-06) read and cross-referenced
