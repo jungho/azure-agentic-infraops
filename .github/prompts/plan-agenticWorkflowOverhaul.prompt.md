@@ -24,11 +24,11 @@ that phase, and continue execution.
 
 ### Milestone 2: Extended Optimization (Phases 7-9) — ~10-15 hrs
 
-| Phase | Task | Detail File                 | Status      | Blocker |
-| ----: | ---- | --------------------------- | ----------- | ------- |
-|     7 | M2-A | `m2-a-ci-enforcement.md`    | complete    | —       |
-|     8 | M2-B | `m2-b-skill-splits.md`      | complete    | —       |
-|     9 | M2-C | `m2-c-subagent-overhaul.md` | complete    | —       |
+| Phase | Task | Detail File                 | Status   | Blocker |
+| ----: | ---- | --------------------------- | -------- | ------- |
+|     7 | M2-A | `m2-a-ci-enforcement.md`    | complete | —       |
+|     8 | M2-B | `m2-b-skill-splits.md`      | complete | —       |
+|     9 | M2-C | `m2-c-subagent-overhaul.md` | complete | —       |
 
 ### Milestone 3: New Capabilities (Phases 10-12) — ~10-15 hrs
 
@@ -57,7 +57,7 @@ that phase, and continue execution.
 | 2026-03-04 | 5       | 6                | M1 gate: baseline snapshot from main, diff report generated. Agents -15%, Skills -20%, Instructions -32%. 43 ref files (on-demand). PR created.                                           |
 | 2026-03-04 | 6       | 7                | Phase 7: 5 CI enforcement validators created (skill-size, agent-body-size, glob-audit, skill-references, orphaned-content) + lint:docs-freshness added to validate:all.                   |
 | 2026-03-04 | 7       | 8                | Phase 8: 5 skills split (session-resume 347->78, terraform-patterns 512->84, azure-bicep-patterns 307->78, azure-troubleshooting 275->77, azure-diagrams 553->149). 15 new ref files.     |
-| 2026-03-04 | 8       | 9                | Phase 9: challenger 323->154, bicep-review 225->141, tf-review 236->150. iac-common skill (118 lines). golden-principles integrated. M2 complete.                                        |
+| 2026-03-04 | 8       | 9                | Phase 9: challenger 323->154, bicep-review 225->141, tf-review 236->150. iac-common skill (118 lines). golden-principles integrated. M2 complete.                                         |
 
 ---
 

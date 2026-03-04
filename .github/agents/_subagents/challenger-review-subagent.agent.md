@@ -83,12 +83,12 @@ per-category and per-artifact-type checklists, plus Azure Infrastructure Skeptic
 
 ## Reference Index
 
-| Reference | Path |
-|-----------|------|
-| Adversarial checklists & skepticism surfaces | `.github/skills/azure-defaults/references/adversarial-checklists.md` |
-| Artifact-type-specific categories | `.github/skills/azure-defaults/references/artifact-type-categories.md` |
-| Adversarial review protocol | `.github/skills/azure-defaults/references/adversarial-review-protocol.md` |
-| Golden Principles | `.github/skills/golden-principles/SKILL.md` |
+| Reference                                    | Path                                                                      |
+| -------------------------------------------- | ------------------------------------------------------------------------- |
+| Adversarial checklists & skepticism surfaces | `.github/skills/azure-defaults/references/adversarial-checklists.md`      |
+| Artifact-type-specific categories            | `.github/skills/azure-defaults/references/artifact-type-categories.md`    |
+| Adversarial review protocol                  | `.github/skills/azure-defaults/references/adversarial-review-protocol.md` |
+| Golden Principles                            | `.github/skills/golden-principles/SKILL.md`                               |
 
 ## Output Format
 

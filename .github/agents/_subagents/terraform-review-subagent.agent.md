@@ -113,12 +113,12 @@ A configuration CANNOT pass review with unresolved policy violations.
 
 Review all `azurerm_role_assignment` resources and classify role/scope risk.
 
-| Check                                         | Severity | Details                                                        |
-| --------------------------------------------- | -------- | -------------------------------------------------------------- |
-| App identity gets `Owner`                     | CRITICAL | FAIL unless explicit approval marker exists                    |
-| App identity gets `Contributor`               | CRITICAL | FAIL unless explicit approval marker exists                    |
-| App identity gets `User Access Administrator` | CRITICAL | FAIL unless explicit approval marker exists                    |
-| Scope is broader than required                | HIGH     | Subscription scope when resource scope is sufficient           |
+| Check                                         | Severity | Details                                              |
+| --------------------------------------------- | -------- | ---------------------------------------------------- |
+| App identity gets `Owner`                     | CRITICAL | FAIL unless explicit approval marker exists          |
+| App identity gets `Contributor`               | CRITICAL | FAIL unless explicit approval marker exists          |
+| App identity gets `User Access Administrator` | CRITICAL | FAIL unless explicit approval marker exists          |
+| Scope is broader than required                | HIGH     | Subscription scope when resource scope is sufficient |
 
 **Explicit approval marker**: A nearby comment `RBAC_EXCEPTION_APPROVED: <ticket-or-ADR>`
 plus a matching record in implementation docs.

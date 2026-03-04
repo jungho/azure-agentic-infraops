@@ -35,13 +35,13 @@ does NOT authenticate CLI commands. Always validate independently.
 
 ### Phased Deployment (recommended for >5 resources)
 
-| Phase | Resources | Gate |
-|-------|-----------|------|
+| Phase      | Resources                             | Gate          |
+| ---------- | ------------------------------------- | ------------- |
 | Foundation | Resource group, networking, Key Vault | User approval |
-| Security | Identity, RBAC, certificates | User approval |
-| Data | Storage, databases, messaging | User approval |
-| Compute | App Service, Functions, containers | User approval |
-| Edge | CDN, Front Door, DNS | User approval |
+| Security   | Identity, RBAC, certificates          | User approval |
+| Data       | Storage, databases, messaging         | User approval |
+| Compute    | App Service, Functions, containers    | User approval |
+| Edge       | CDN, Front Door, DNS                  | User approval |
 
 - **Bicep**: Pass `-Phase {name}` to `deploy.ps1`
 - **Terraform**: Pass `-var deployment_phase={name}` to plan/apply
@@ -54,27 +54,27 @@ Deploy everything in one operation. Still requires user approval.
 
 ## Known Issues (Cross-IaC)
 
-| Issue | Workaround |
-|-------|------------|
-| MSAL token stale (devcontainer/WSL) | `az login --use-device-code` in the **same terminal** |
-| Azure extension auth ≠ CLI auth | Validate CLI auth independently |
-| RBAC permission errors | Use validation-level flags to isolate |
-| JSON parsing errors in deploy scripts | Use direct `az deployment` / `terraform` commands |
+| Issue                                 | Workaround                                            |
+| ------------------------------------- | ----------------------------------------------------- |
+| MSAL token stale (devcontainer/WSL)   | `az login --use-device-code` in the **same terminal** |
+| Azure extension auth ≠ CLI auth       | Validate CLI auth independently                       |
+| RBAC permission errors                | Use validation-level flags to isolate                 |
+| JSON parsing errors in deploy scripts | Use direct `az deployment` / `terraform` commands     |
 
 ### Bicep-Specific
 
-| Issue | Workaround |
-|-------|------------|
+| Issue                            | Workaround                             |
+| -------------------------------- | -------------------------------------- |
 | What-if fails (RG doesn't exist) | Create RG first: `az group create ...` |
 
 ### Terraform-Specific
 
-| Issue | Workaround |
-|-------|------------|
-| `terraform init` fails — backend missing | Run `bootstrap-backend.sh` first |
-| Backend state lock held | `terraform force-unlock {id}` (requires approval) |
-| Provider init slow | Set `TF_PLUGIN_CACHE_DIR` |
-| `terraform fmt -check` fails | Run `terraform fmt -recursive` to auto-fix |
+| Issue                                    | Workaround                                        |
+| ---------------------------------------- | ------------------------------------------------- |
+| `terraform init` fails — backend missing | Run `bootstrap-backend.sh` first                  |
+| Backend state lock held                  | `terraform force-unlock {id}` (requires approval) |
+| Provider init slow                       | Set `TF_PLUGIN_CACHE_DIR`                         |
+| `terraform fmt -check` fails             | Run `terraform fmt -recursive` to auto-fix        |
 
 ---
 
@@ -100,7 +100,7 @@ When translating Azure Policy `Deny` constraints to IaC:
 - Auth validation fails (`az account get-access-token` error)
 - Validation errors (`bicep build` / `terraform validate`)
 - Delete/Destroy operations without explicit user approval
-- >10 resource changes (summarize first, then ask)
+- > 10 resource changes (summarize first, then ask)
 - User hasn't approved the deployment
 - Deprecation signals detected in preview output
 
@@ -108,11 +108,11 @@ When translating Azure Policy `Deny` constraints to IaC:
 
 ## Reference Index
 
-| Reference | Location |
-|-----------|----------|
-| CLI auth validation procedure | `azure-defaults/references/azure-cli-auth-validation.md` |
-| Policy effect decision tree | `azure-defaults/references/policy-effect-decision-tree.md` |
-| Bicep policy compliance | `instructions/bicep-policy-compliance.instructions.md` |
-| Terraform policy compliance | `instructions/terraform-policy-compliance.instructions.md` |
-| Bootstrap backend templates | `terraform-patterns/references/bootstrap-backend-template.md` |
-| Deploy script templates | `terraform-patterns/references/deploy-script-template.md` |
+| Reference                     | Location                                                      |
+| ----------------------------- | ------------------------------------------------------------- |
+| CLI auth validation procedure | `azure-defaults/references/azure-cli-auth-validation.md`      |
+| Policy effect decision tree   | `azure-defaults/references/policy-effect-decision-tree.md`    |
+| Bicep policy compliance       | `instructions/bicep-policy-compliance.instructions.md`        |
+| Terraform policy compliance   | `instructions/terraform-policy-compliance.instructions.md`    |
+| Bootstrap backend templates   | `terraform-patterns/references/bootstrap-backend-template.md` |
+| Deploy script templates       | `terraform-patterns/references/deploy-script-template.md`     |

@@ -123,7 +123,7 @@ Skills are reusable capabilities that agents invoke or that activate automatical
 | ---------------------- | ------------------------------------------ | ------------------------------------------------ |
 | `azure-bicep-patterns` | Reusable Bicep infrastructure patterns     | "bicep pattern", "hub-spoke", "private endpoint" |
 | `terraform-patterns`   | Reusable Terraform infrastructure patterns | "terraform pattern", "AVM-TF", "HCL"             |
-| `iac-common`           | Shared IaC patterns for deploy + review    | "deploy pattern", "CLI auth", "known issues"      |
+| `iac-common`           | Shared IaC patterns for deploy + review    | "deploy pattern", "CLI auth", "known issues"     |
 
 ### Workflow & Tool Integration (Category 4)
 
