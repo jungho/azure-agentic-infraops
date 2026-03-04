@@ -4,12 +4,13 @@
 
 | Domain          | Grade | Status                                                                        | Next Action                                           |
 | --------------- | ----- | ----------------------------------------------------------------------------- | ----------------------------------------------------- |
-| Agents          | A-    | 14 primary + 9 subagents; dual-IaC Bicep + Terraform complete                 | Fix `agents` array warnings in 4 agent frontmatters   |
-| Skills          | A     | 17 named GA skills confirmed; all pass GA format validation; no residue found | Maintain as new skills added                          |
-| Instructions    | A-    | 26 instruction files; 0 errors; 3 minor `applyTo` warnings (non-blocking)     | Investigate ⚠️ on bicep/shell/terraform applyTo globs |
+| Agents          | A     | 15 primary + 9 subagents; all ≤350 body lines; Boundaries on all 14+1         | Monitor body sizes via `lint:agent-body-size`          |
+| Skills          | A     | 18 GA skills; 10 split with references/; 60 on-demand reference files         | Maintain as new skills added                          |
+| Instructions    | A     | 26 instruction files; 5 split with references; narrow globs enforced          | Monitor via `lint:glob-audit`                         |
 | Infrastructure  | B+    | Bicep complete; Terraform track on tf-dev, not yet merged                     | Merge tf-dev and validate full Terraform suite        |
-| Documentation   | A     | Agent/skill counts accurate across all docs after gardening fix               | Monitor for drift after future skill additions        |
-| CI / Validation | A     | 15 validators; all pass; validate:session-state added; full suite green       | Maintain as new validators added                      |
+| Documentation   | A     | Agent/skill counts accurate; weekly freshness cron; quarterly audit           | Automated via `docs-freshness.yml` workflow           |
+| CI / Validation | A+    | 22 validators; all pass; 5 context-optimization guardrails added              | Maintain as new validators added                      |
+| Context Budget  | A     | Agents -18%, Skills -46%, Instructions -32% vs baseline; 60 ref files         | Quarterly audit via AGENTS.md checklist               |
 | Backlog         | B     | 2 active debt items remain (tf-dev merge, frontmatter warnings); 7 resolved   | Close resolved issues; track frontmatter fix          |
 
 ## Grading Scale
@@ -38,6 +39,13 @@
 | 2026-03-02 | Documentation   | Fixed docs/README.md skill counts (16 → 17); added `session-resume` to skills table     |
 | 2026-03-02 | Documentation   | Grade upgraded A- → A: all counts now accurate after gardening fix                      |
 | 2026-03-02 | Instructions    | Instruction count corrected 25 → 26                                                     |
+| 2026-03-04 | Context Budget  | M1: Agents -15%, Skills -20%, Instructions -32%; 43 on-demand reference files            |
+| 2026-03-04 | CI / Validation | M2: 5 context-optimization validators added; validator count 15 → 22                     |
+| 2026-03-04 | Skills          | M2: 5 skills split (session-resume, terraform-patterns, azure-bicep-patterns, etc.)      |
+| 2026-03-04 | Agents          | M2: 3 subagents trimmed; iac-common skill created; golden-principles integrated          |
+| 2026-03-04 | Agents          | M3: Fast-path conductor created; challenger model → Sonnet 4.6; agent count 14 → 15     |
+| 2026-03-04 | Documentation   | M3: Weekly freshness cron workflow; quarterly context audit checklist                     |
+| 2026-03-04 | Context Budget  | M3 FINAL: Agents -18%, Skills -46%, Instructions -32%; 60 on-demand reference files      |
 
 ## How to Update
 
