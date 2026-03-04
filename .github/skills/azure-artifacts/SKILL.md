@@ -1,11 +1,6 @@
 ---
 name: azure-artifacts
-description: >-
-  Artifact template structures, H2 compliance rules, and documentation styling
-  for agent outputs (Steps 1-7).
-  USE FOR: generating any agent artifact, checking H2 structure compliance.
-  DO NOT USE FOR: Azure resource configuration (use azure-defaults),
-  Bicep/Terraform patterns (use bicep-patterns or terraform-patterns).
+description: "Artifact template structures, H2 compliance rules, and documentation styling for agent outputs (Steps 1-7). USE FOR: generating any agent artifact, checking H2 structure compliance. DO NOT USE FOR: Azure resource configuration (use azure-defaults), Bicep/Terraform patterns (use bicep-patterns or terraform-patterns)."
 compatibility: Works with Claude Code, GitHub Copilot, VS Code, and any Agent Skills compatible tool.
 license: MIT
 metadata:

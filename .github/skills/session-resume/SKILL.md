@@ -1,9 +1,6 @@
 ---
 name: session-resume
-description: >-
-  Session state tracking and resume protocol for the 7-step agent workflow.
-  USE FOR: resume session, persist progress, checkpoint recovery, session-state.json schema.
-  DO NOT USE FOR: Azure infrastructure, code generation, architecture design, troubleshooting.
+description: "Session state tracking and resume protocol for the 7-step agent workflow. USE FOR: resume session, persist progress, checkpoint recovery, session-state.json schema. DO NOT USE FOR: Azure infrastructure, code generation, architecture design, troubleshooting."
 compatibility: All agents (01-Conductor through 08-As-Built)
 ---
 
