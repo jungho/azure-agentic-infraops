@@ -76,7 +76,7 @@ are enforced as first-class concerns across all generated infrastructure.
 
   ***
 
-  Four MCP servers: GitHub, Azure, Pricing, and Terraform Registry.
+  Three MCP servers plus one VS Code extension: GitHub, Azure Pricing, Terraform Registry, and Azure MCP (extension).
 
   [:octicons-arrow-right-24: MCP servers](mcp-integration.md)
 
@@ -210,7 +210,7 @@ artefact files in `agent-output/{project}/` and the machine-readable
 **Right-sized task decomposition.** Ralph insists that each PRD item must be
 small enough to complete within a single context window — "Add a database
 column" not "Build the entire dashboard." This project enforces the same
-principle at a different scale: each of the 7 workflow steps is scoped to a
+principle at a different scale: each of the 8 workflow steps is scoped to a
 single well-defined output (one requirements doc, one architecture assessment,
 one implementation plan), and subagents are further decomposed to atomic
 validation or review tasks.

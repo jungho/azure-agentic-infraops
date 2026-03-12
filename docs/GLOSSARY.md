@@ -475,13 +475,14 @@ YAML is used in agent frontmatter (`.agent.md`), instruction frontmatter
 
 ## Numbers & Symbols
 
-### 7-Step Agentic Workflow
+### 8-Step Agentic Workflow
 
 The core Agentic InfraOps workflow: `requirements` → `architect` → Design Artifacts →
-IaC Plan → IaC Code → Deploy → Documentation. Steps 1-3 and 7 are shared;
-steps 4-6 diverge into **Bicep track** (`bicep-planner` → `bicep-codegen` → `bicep-deploy`)
-or **Terraform track** (`terraform-planner` → `terraform-codegen` → `terraform-deploy`).
-Each step produces artifacts in `agent-output/`.
+Governance → IaC Plan → IaC Code → Deploy → Documentation. Step 3.5 (Governance)
+runs between Design and IaC Plan. Steps 1–3 and 7 are shared; steps 4–6 diverge into
+**Bicep track** (`bicep-planner` → `bicep-codegen` → `bicep-deploy`) or **Terraform track**
+(`terraform-planner` → `terraform-codegen` → `terraform-deploy`). Each step produces
+artifacts in `agent-output/`.
 
 📁 **See**: [Workflow Guide](workflow.md)
 

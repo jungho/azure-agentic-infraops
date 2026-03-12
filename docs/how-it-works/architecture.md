@@ -4,7 +4,7 @@ toc_depth: 3
 
 # :material-transit-connection-variant: System Architecture Overview
 
-## :material-format-list-numbered: The 7-Step Workflow
+## :material-format-list-numbered: The 8-Step Workflow
 
 The system follows a strict sequential workflow with mandatory human approval gates
 between critical phases:
@@ -50,16 +50,16 @@ flowchart LR
     S1 --> G1 --> S2 --> G2 --> S3 --> S35 --> G25 --> S4 --> G3 --> S5 --> G4 --> S6 --> G5 --> S7
 ```
 
-| Step | Phase        | Agent                              | Output                                   | Review            |
-| ---- | ------------ | ---------------------------------- | ---------------------------------------- | ----------------- |
-| 1    | Requirements | 02-Requirements                    | `01-requirements.md`                     | 1 challenger pass |
-| 2    | Architecture | 03-Architect                       | `02-architecture-assessment.md` + cost   | 3+1 passes        |
-| 3    | Design (opt) | 04-Design                          | `03-des-*.{py,png,md}`                   | —                 |
-| 3.5  | Governance   | 04g-Governance                     | `04-governance-constraints.md/.json`     | —                 |
-| 4    | IaC Plan     | 05b-Bicep Planner / 05t-TF Planner | `04-implementation-plan.md`              | 1+3 passes        |
-| 5    | IaC Code     | 06b-Bicep CodeGen / 06t-TF CodeGen | `infra/bicep/` or `infra/terraform/`     | 3 passes          |
-| 6    | Deploy       | 07b-Bicep Deploy / 07t-TF Deploy   | `06-deployment-summary.md`               | 1 pass            |
-| 7    | As-Built     | 08-As-Built                        | `07-*.md` documentation suite            | —                 |
+| Step | Phase        | Agent                              | Output                                 | Review            |
+| ---- | ------------ | ---------------------------------- | -------------------------------------- | ----------------- |
+| 1    | Requirements | 02-Requirements                    | `01-requirements.md`                   | 1 challenger pass |
+| 2    | Architecture | 03-Architect                       | `02-architecture-assessment.md` + cost | 3+1 passes        |
+| 3    | Design (opt) | 04-Design                          | `03-des-*.{py,png,md}`                 | —                 |
+| 3.5  | Governance   | 04g-Governance                     | `04-governance-constraints.md/.json`   | —                 |
+| 4    | IaC Plan     | 05b-Bicep Planner / 05t-TF Planner | `04-implementation-plan.md`            | 1+3 passes        |
+| 5    | IaC Code     | 06b-Bicep CodeGen / 06t-TF CodeGen | `infra/bicep/` or `infra/terraform/`   | 3 passes          |
+| 6    | Deploy       | 07b-Bicep Deploy / 07t-TF Deploy   | `06-deployment-summary.md`             | 1 pass            |
+| 7    | As-Built     | 08-As-Built                        | `07-*.md` documentation suite          | —                 |
 
 ## :material-music: The Conductor Pattern
 
@@ -100,15 +100,15 @@ decision context. The new session resumes from the checkpoint by reading the sta
 
 | Tier           | Model         | Used By                                          |
 | -------------- | ------------- | ------------------------------------------------ |
-| Primary        | Claude Opus   | Conductor, Steps 1–7 agents                      |
+| Primary        | Claude Opus   | Conductor, all workflow step agents              |
 | Review         | Claude Sonnet | Challenger reviews, code reviews (A/B validated) |
 | Heavy API Work | GPT Codex     | Governance discovery (batch REST API calls)      |
 | Utility        | GPT-4o-mini   | Session state updates, lightweight tasks         |
 
 **Subagent Integration Matrix**: The full mapping of which subagents are invoked by
-which parent agents is externalised to
-`.github/skills/workflow-engine/references/subagent-integration.md` to keep the
-Conductor body under the 350-line limit.
+which parent agents is externalised to the
+[subagent-integration reference](../../.github/skills/workflow-engine/references/subagent-integration.md)
+to keep the Conductor body under the 350-line limit.
 
 ## :material-source-fork: Dual IaC Tracks
 
@@ -117,7 +117,8 @@ Conductor body under the 350-line limit.
   alt="Railway tracks diverging representing dual IaC tracks"></div><br/>
 
 Steps 1–3 (Requirements, Architecture, Design) are shared across both infrastructure
-tracks. At Step 4, the workflow diverges based on the `iac_tool` field in the requirements
+tracks. Step 3.5 (Governance) is also shared and mandatory. At Step 4, the workflow
+diverges based on the `iac_tool` field in the requirements
 document:
 
 ```mermaid
@@ -163,4 +164,4 @@ flowchart TD
     - [Core Concepts](four-pillars.md) — agents, skills, instructions, and configuration registries
     - [Agent Architecture](agents.md) — 16 top-level agents, 11 subagents, Challenger pattern
     - [Workflow Engine & Quality](workflow-engine.md) — DAG model, session state, circuit breakers
-    - [MCP Integration](mcp-integration.md) — four MCP servers and tool catalogs
+    - [MCP Integration](mcp-integration.md) — MCP servers and tool catalogs
