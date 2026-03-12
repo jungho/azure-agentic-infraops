@@ -219,9 +219,9 @@ graph TB
 | ---------------------- | ---------- | --------------------------------------- | -------------------- |
 | **InfraOps Conductor** | 🎼 Maestro | Master orchestrator for 8-step workflow | Claude Opus (latest) |
 
-### Core Agents (7 Steps)
+### Core Agents (8 Steps)
 
-Steps 1-3 and 7 are shared. Steps 4-6 have Bicep and Terraform variants.
+Steps 1-3.5 and 7 are shared. Steps 4-6 have Bicep and Terraform variants.
 
 | Step | Agent              | Codename      | Role                                 | Artifact                                             |
 | ---- | ------------------ | ------------- | ------------------------------------ | ---------------------------------------------------- |

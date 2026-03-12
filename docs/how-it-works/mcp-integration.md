@@ -6,13 +6,15 @@ toc_depth: 3
 
 The Model Context Protocol (MCP) is an open standard that allows AI agents to
 discover and invoke external tools through a uniform JSON-RPC interface.
-This project integrates four MCP servers, each providing specialised
-capabilities that agents invoke at runtime.
+This project integrates three MCP servers (declared in `.vscode/mcp.json`) plus the
+Azure MCP Server (a VS Code extension), each providing specialised capabilities that
+agents invoke at runtime.
 
 ## :material-lan: MCP Architecture
 
-All MCP servers are declared in `.vscode/mcp.json` and start automatically
-when VS Code invokes them. Agents never call cloud APIs directly — they
+Three MCP servers are declared in `.vscode/mcp.json` and start automatically
+when VS Code invokes them. The Azure MCP Server runs as a VS Code extension
+(`ms-azuretools.vscode-azure-mcp-server`) and uses `az login` credentials. Agents never call cloud APIs directly — they
 call MCP tools, which handle authentication, caching, pagination, retries,
 and response formatting.
 
@@ -123,6 +125,13 @@ The server includes a 256-entry TTL cache (5-minute pricing, 24-hour
 retirement data, 1-hour spot data), ~95 user-friendly service name
 mappings (e.g. `"vm"` → `"Virtual Machines"`), and structured error
 codes for consistent agent error handling.
+
+!!! note "Pricing accuracy"
+
+    Cached prices may not reflect real-time promotional discounts, reserved instance
+    pricing, or recent regional changes. Always validate final estimates in the
+    [Azure Pricing Calculator](https://azure.microsoft.com/pricing/calculator/)
+    before committing budget.
 
 Primarily scoped to the **Architect** agent (Step 2), the
 **cost-estimate-subagent**, and the **As-Built** agent (Step 7).

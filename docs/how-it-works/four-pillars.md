@@ -39,7 +39,8 @@ directives. The `SKILL.md` file provides a compact overview (under 500 lines), a
 reference material is stored in subdirectories, loaded only when the agent's task demands it.
 
 **Key constraint**: Skills implement progressive disclosure — agents start with the overview
-and drill into `references/` only when needed.
+and drill into `references/` only when needed. This preserves context window space for
+task-specific knowledge.
 
 ## :material-file-document-outline: 3. Instructions
 
@@ -119,7 +120,7 @@ and the VS Code runtime. Tools give agents real-time access to external systems:
   `agent-output/{project}/`. The next agent reads those files as input — there is no
   direct message passing between agents.
 
-This project integrates four MCP servers:
+This project integrates three MCP servers (in `.vscode/mcp.json`) plus the Azure MCP extension:
 
 | Server            | Purpose                            | Transport          |
 | ----------------- | ---------------------------------- | ------------------ |
@@ -137,4 +138,4 @@ This project integrates four MCP servers:
     - [Agent Architecture](agents.md) — 16 top-level agents, 11 subagents, the Challenger pattern
     - [Skills & Instructions](skills-and-instructions.md) — progressive loading, glob-based enforcement
     - [Workflow Engine & Quality](workflow-engine.md) — DAG model, approval gates, validators
-    - [MCP Integration](mcp-integration.md) — four MCP servers and their tool catalogs
+    - [MCP Integration](mcp-integration.md) — MCP servers and their tool catalogs

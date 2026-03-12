@@ -159,13 +159,13 @@ sequenceDiagram
 
 ## :material-chart-box-outline: Key Facts
 
-|                 |                                       |
-| --------------- | ------------------------------------- |
-| **Agents**      | 16 primary + 11 subagents             |
-| **Skills**      | Reusable domain knowledge modules     |
-| **IaC Tracks**  | Bicep and Terraform (dual-track)      |
-| **MCP Servers** | Azure, Pricing, Terraform, GitHub     |
-| **Workflow**    | 8 steps with mandatory approval gates |
+|                 |                                                          |
+| --------------- | -------------------------------------------------------- |
+| **Agents**      | 16 top-level + 11 subagents                              |
+| **Skills**      | Reusable domain knowledge modules                        |
+| **IaC Tracks**  | Bicep and Terraform (dual-track)                         |
+| **MCP Servers** | GitHub, Azure Pricing, Terraform + Azure MCP (extension) |
+| **Workflow**    | 8 steps with mandatory approval gates                    |
 
 ## :material-star-outline: Highlights
 

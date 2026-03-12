@@ -159,7 +159,10 @@ Invoke agents directly for specific tasks:
 ## :material-chart-timeline-variant: Step 7: Follow the Workflow
 
 The agents work in sequence with handoffs. Steps 1-3.5 and 7 are shared;
-steps 4-6 route to **Bicep** or **Terraform** agents based on your `iac_tool` selection.
+steps 4-6 route to **Bicep** or **Terraform** agents based on your `iac_tool` selection
+in Step 1. During requirements gathering, the Requirements agent asks which IaC tool
+you prefer — this choice determines which planning, code generation, and deployment
+agents the Conductor invokes.
 
 Each agent has a thematic codename for easy reference in documentation and prompts.
 
@@ -182,6 +185,13 @@ Each agent has a thematic codename for easy reference in documentation and promp
 - ⛔ **Gate 3**: After planning (Step 4) — approve implementation plan
 - ⛔ **Gate 4**: After validation (Step 5) — approve preflight results
 - ⛔ **Gate 5**: After deployment (Step 6) — verify resources
+
+!!! tip "If a gate rejects your proposal"
+
+    If the Challenger or an approval gate produces `must_fix` findings, return to the
+    previous step, update your approach based on the feedback, and re-run. The Conductor
+    will re-execute the step and re-trigger the gate. Use the artifact files in
+    `agent-output/{project}/` to understand what was flagged.
 
 ## :material-folder-check-outline: What You've Created
 

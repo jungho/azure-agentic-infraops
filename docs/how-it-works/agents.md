@@ -129,6 +129,12 @@ This achieves 40–70% input reduction for heavy artefacts. After each review pa
 only the `compact_for_parent` string is carried forward (not the full JSON findings),
 preventing context bloat across multi-pass reviews.
 
+!!! tip "If a challenger review hangs"
+
+    If a review takes >10 minutes with no output, restart the chat session and
+    resume from the failed gate. Use `00-session-state.json` to verify the last
+    completed step.
+
 **New Challenger Checklists**: Two mandatory checklist categories were added:
 
 - **Cost Monitoring**: Budget resource, forecast alerts at 80/100/120%, anomaly detection.
@@ -157,4 +163,4 @@ This enables resume from any gate without needing to re-read all prior artefacts
     - [Core Concepts](four-pillars.md) — the four knowledge layers (agents, skills, instructions, registries)
     - [Skills & Instructions](skills-and-instructions.md) — progressive skill loading and glob-based enforcement
     - [Workflow Engine & Quality](workflow-engine.md) — DAG model, approval gates, circuit breakers
-    - [MCP Integration](mcp-integration.md) — the four MCP servers and their tool catalogs
+    - [MCP Integration](mcp-integration.md) — MCP servers and their tool catalogs

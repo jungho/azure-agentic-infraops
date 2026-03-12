@@ -4,7 +4,7 @@ Thank you for your interest in contributing! Agentic InfraOps revolutionizes how
 Azure environments through coordinated AI agents.
 
 This file is the quick contributor entrypoint.
-For the agent orchestration workflow, see [Agent and Skill Workflow](workflow.md).
+For the agent orchestration workflow, see [Agent Architecture](how-it-works/agents.md).
 
 ## What We're Looking For
 

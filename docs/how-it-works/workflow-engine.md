@@ -73,6 +73,12 @@ Each node has a type (`agent-step`, `gate`, `subagent-fan-out`, `validation`), a
 edge has a condition (`on_complete`, `on_skip`, `on_fail`). Conditional routing at IaC
 nodes is governed by the `decisions.iac_tool` field.
 
+!!! info "Read-only workflow graph"
+
+    The workflow DAG is auto-loaded by the Conductor. Users do not edit
+    `workflow-graph.json` directly. To customise the workflow, modify agent
+    definitions or skills instead.
+
 ### Gates and Approval Points
 
 Five mandatory gates require explicit human confirmation before the workflow advances:
@@ -240,4 +246,4 @@ and timeout. They run automatically — agents do not invoke them explicitly.
     - [System Architecture](architecture.md) — the 8-step workflow, Conductor pattern, dual IaC tracks
     - [Core Concepts](four-pillars.md) — agents, skills, instructions, and configuration registries
     - [Agent Architecture](agents.md) — handoffs, the Challenger pattern, context shredding
-    - [MCP Integration](mcp-integration.md) — four MCP servers and how agents invoke tools
+    - [MCP Integration](mcp-integration.md) — MCP servers and how agents invoke tools
