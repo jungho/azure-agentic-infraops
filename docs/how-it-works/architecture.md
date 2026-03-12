@@ -106,9 +106,9 @@ decision context. The new session resumes from the checkpoint by reading the sta
 | Utility        | GPT-4o-mini   | Session state updates, lightweight tasks         |
 
 **Subagent Integration Matrix**: The full mapping of which subagents are invoked by
-which parent agents is externalised to
-[`.github/skills/workflow-engine/references/subagent-integration.md`](../../.github/skills/workflow-engine/references/subagent-integration.md) to keep the
-Conductor body under the 350-line limit.
+which parent agents is externalised to the
+[subagent-integration reference](../../.github/skills/workflow-engine/references/subagent-integration.md)
+to keep the Conductor body under the 350-line limit.
 
 ## :material-source-fork: Dual IaC Tracks
 
